@@ -1,0 +1,94 @@
+<!--
+Created by lisha on 16/11/16
+describe : “我的青春我做主”全国大学生才艺大赛
+-->
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta content="telephone=no" name="format-detection">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <link href="__PUBLIC__/puvote/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="__PUBLIC__/puvote/common/css/reset.min.css" rel="stylesheet">
+    <link href="__PUBLIC__/puvote/common/css/style.css" rel="stylesheet">
+    <title>{$vote.name}</title>
+</head>
+<body>
+<div id="beautiful" data-type="search">
+
+    <!--搜索-->
+    <header>
+        <div class="L-search">
+            <p class="h_index_input">
+                <input id="searchInput" @focus="getFocus"
+                       data-url="{:U('Pufinance/PuVote/search')}&vote_id={$vote.id}"
+                       @keyup.enter="SearchEnter"
+                       placeholder="请输入选手编号或姓名"
+                       v-model="inputValue" value="{$_GET['key']}">
+            </p>
+            <p class="h_index_clear" @click="clear">
+                <span></span>
+            </p>
+            <p class="h_index_btn">
+                <button @click="SearchEnter" data-url="{:U('Pufinance/PuVote/search')}&vote_id={$vote.id}">搜索</button>
+            </p>
+        </div>
+    </header>
+
+    <if condition="empty($list)">
+        <!--搜索为空-->
+        <div class="Empty" transition="expand">
+            <img src="__PUBLIC__/puvote/common/images/none.png">
+        </div>
+
+    <else />
+        <div class="indexSchool" transition="expand">
+            <ul class="indexUl clearfix">
+                <volist name="list" id="item">
+                    <li data-url="{:U('Pufinance/PuVote/item')}&vote_id={$vote.id}&item_id={$item.id}">
+                        <img src="{$item.cover}" @click="goItem" />
+                        <p class="jonnerNum" @click="goItem">{$item.id}</p>
+                        <p class="school" @click="goItem">{$item.name}</p>
+                        <p class="point" @click="goItem">{$item.votes}票</p>
+                        <button  @click="vote({$item.id}, $event)" data-url="{:U('Pufinance/PuVote/vote')}&vote_id={$vote.id}">投票</button>
+                    </li>
+                </volist>
+
+            </ul>
+            <div class="index_loading_flag"></div>
+        </div>
+    </if>
+
+    <!--投票提示-->
+    <div class="modal fade" id="tips">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!--二维码-->
+                <div class="two">
+                    <span class="sClose">
+                    </span>
+                    <img src="common/images/two.png">
+                    <p>长按扫我关注参与投票</p>
+                </div>
+                <!--成功-->
+                <div class="success">
+                    <p>投票成功</p>
+                </div>
+                <!--false-->
+                <div class="error" >
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <include file="./footer" />
+
+</div>
+</body>
+<script src="__PUBLIC__/puvote/bower_components/requirejs/require.js" data-main="__PUBLIC__/puvote/common/js/index"></script>
+
+</html>

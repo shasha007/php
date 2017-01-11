@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <link href="../Public/css/reset.css" rel="stylesheet">
+    <link rel="stylesheet" href="../Public/css/chongzhi.css" />
+    <title>PU币充值</title>
+</head>
+<body>
+<form id="recharge-form" method="post" action="{:U('Pufinance/Money/doRecharge')}" onsubmit="return checkAmount()">
+<div class="L-mainPU">
+<header class="L-PUBchong-header">
+    <div class="L-PUleft">
+        <img src="../Public/img/PUBchong.png" />
+    </div>
+    <div class="L-PUright">
+        <p>PU币充值</p>
+        <p>PU币不够了？快来充值吧！</p>
+    </div>
+</header>
+    <div class="L-PUB-pay">
+        <ul>
+            <li data-type="1">
+                10元
+            </li>
+            <li data-type="2">
+                50元
+            </li>
+            <li data-type="3">
+                100元
+            </li>
+            <li data-type="4">
+                200元
+            </li>
+        </ul>
+    </div>
+    <div class="L-PUB-more">
+        <input type="text" id="other" name="other" value="其他金额" onblur="if(this.value==''){this.value=this.defaultValue; this.style.color='#9D9D9D';}"/>
+        <input type="hidden" id="type" name="type" value="" />
+    </div>
+</div>
+    <div class="L-chongzhi">
+        <button type="submit">点此充值</button>
+        <div class="L-payPU">
+            <p>兑换比例 ：1元人民币 = 1PU币</p>
+            <p>银行系统可能会有延迟，请查看【PU币余额/明细】</p>
+            <p>如10分钟任未到账，请联系我们。</p>
+            <p>官方客服电话：400-878-8593</p>
+        </div>
+    </div>
+</form>
+</body>
+</html>
+<script type="text/javascript" src="__PUBLIC__/js/jquery-2.1.1.min.js"></script>
+<script>
+    $(function() {
+        $('#other').focus(function () {
+            $('#type').val('0');
+            if (this.value==this.defaultValue) {
+                this.value='';
+                this.style.color='#3e3e3e';
+            }
+        });
+        $(".L-PUB-pay li").click(function(){
+            $(".L-PUB-focas").removeClass("L-PUB-focas");
+            $(this).addClass("L-PUB-focas");
+            $('#type').val($(this).attr('data-type'));
+        });
+        $(".L-PUB-more").click(function(){
+            $(".L-PUB-focas").removeClass("L-PUB-focas");
+            $(this).addClass("L-PUB-focas");
+        });
+    });
+    function checkAmount() {
+        var other = parseFloat($('#other').val());
+        var type = $('#type').val();
+        if (type == '') {
+            alert('请选择充值金额');
+            return false;
+        }
+        if (type == 0 && (isNaN(other) || other <= 0)) {
+            alert('请输入充值金额');
+            return false;
+        }
+        return true;
+    }
+</script>

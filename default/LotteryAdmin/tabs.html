@@ -1,0 +1,35 @@
+<div class="page_tit">抽奖活动</div>
+<div class="tit_tab">
+    <ul>
+        <li><a href="{:U('Pufinance/LotteryAdmin/index')}"
+            <?php if(ACTION_NAME == "index" || ACTION_NAME == "prize"):?>
+            class="on"
+            <?php endif;?>
+            >活动管理</a>
+        </li>
+        <li><a href="{:U('Pufinance/LotteryAdmin/user')}"
+            <?php if(ACTION_NAME == "user"):?>
+            class="on"
+            <?php endif;?>
+            >参与用户</a>
+        </li>
+        <li><a href="{:U('Pufinance/LotteryAdmin/order')}"
+            <?php if(ACTION_NAME == "order"):?>
+            class="on"
+            <?php endif;?>
+            >订单管理</a>
+        </li>
+        <li><a href="{:U('Pufinance/LotteryAdmin/record')}"
+            <?php if(ACTION_NAME == "record"):?>
+            class="on"
+            <?php endif;?>
+            >抽奖记录</a>
+        </li>
+        <li><a href="{:U('Pufinance/LotteryAdmin/invite')}"
+            <?php if(ACTION_NAME == "invite"):?>
+            class="on"
+            <?php endif;?>
+            >邀请记录</a>
+        </li>
+    </ul>
+</div>

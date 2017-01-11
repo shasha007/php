@@ -1,0 +1,27 @@
+<include file="../Public/header" />
+<div class="so_main">
+    <include file="../Public/schoolVoteTabs" />
+    <include file="./p_tab"/>
+
+<div class="list">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+            <th class="line_l">ID</th>
+            <th class="line_l">投票项</th>
+            <th class="line_l">票数</th>
+            <th class="line_l">描述</th>
+        </tr>
+        <volist name="data" id="vo">
+            <tr overstyle="on">
+                <td>{$vo.id}</td>
+                <td>{$vo.name}</td>
+                <td>{$vo.votes}</td>
+                <td width="600px;">{$vo.desc}</td>
+            </tr>
+        </volist>
+    </table>
+</div>
+</div>
+
+
+<include file="../Public/footer" />

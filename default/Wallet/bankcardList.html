@@ -1,0 +1,99 @@
+<include file="../Public/header" />
+<div class="so_main">
+    <include file="../Public/tabs" />
+    <include file="walletTab" />
+    <hr>
+    <div class="Toolbar_inbox">
+        <form action="__URL__">
+            <input type="hidden" name="app" value="pufinance"/>
+            <input type="hidden" name="mod" value="Wallet"/>
+            <input type="hidden" name="act" value="bankcardList"/>
+            用户UID：<input type="number" min="1" value="{$Think.get.uid}" name="uid" />&nbsp;&nbsp;
+            姓名：<input name="realname" type="text" value="{$Think.get.realname}">&nbsp;&nbsp;
+            身份证号：<input type="text" value="{$Think.get.ctfid}" name="ctfid" />&nbsp;&nbsp;
+            <!--状态：<select name="status">
+            <option value="0">&#45;&#45;请选择&#45;&#45;</option>
+            <option value="1" <?php if(1 == $_GET['status']):?>selected<?php endif;?>>白名单</option>
+            <option value="2" <?php if(2 == $_GET['status']):?>selected<?php endif;?>>黑名单</option>
+
+        </select>-->
+            &nbsp;&nbsp;<input type="submit" class="btn_b" value="搜索" />
+        </form>
+        <span>共{$totalRows}条记录</span>
+        <div class="page right">{$html}</div>
+    </div>
+
+    <div class="list">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+                <th>ID</th>
+                <th>用户ID</th>
+                <th>姓名</th>
+                <th>学号</th>
+                <th>身份证</th>
+                <th>银行</th>
+                <th>卡号</th>
+                <th>银行预留手机号</th>
+                <th>对应资金方</th>
+                <th>添加时间</th>
+                <th>状态</th>
+                <th>操作</th>
+            </tr>
+            <volist name="data" id="vo">
+                <tr overstyle="on">
+                    <td>{$vo.id}</td>
+                    <td>{$vo.uid}</td>
+                    <td>{$vo.realname}</td>
+                    <td>{:getUserEmailNum(getUserField($vo['uid'], 'email'))}</td>
+                    <td>{$vo.ctfid}</td>
+                    <td>{$vo.bank_name}</td>
+                    <td>{$vo.card_no}</td>
+                    <td>{$vo.mobile}</td>
+                    <td>{$vo.invest_id|get_invest}</td>
+                    <td>{$vo.ctime|date='Y-m-d', ###}</td>
+                    <td><?php echo $vo['status'] ? '正常' : '解绑'?></td>
+                    <td>
+                        <a href="javascript:deleteBankcard('{$vo.uid}', '{$vo.id}')">彻底删除</a>
+                    </td>
+                </tr>
+            </volist>
+
+        </table>
+    </div>
+    <div class="Toolbar_inbox">
+        <span>共{$totalRows}条记录</span>
+        <div class="page right">{$html}</div>
+    </div>
+</div>
+<script type="text/javascript">
+    function changeAllAmount(uid,amount){
+        var url = '<?php echo U('pufinance/Wallet/changeAllAmount'); ?>'+'&uid='+uid;
+        ui.box.load(url,{title:'总额度'});
+    }
+    function changeFreeAmount(uid){
+        var url = '<?php echo U('pufinance/Wallet/changeFreeAmount'); ?>'+'&uid='+uid;
+        ui.box.load(url,{title:'免息额度'});
+    }
+    function changeFreeRiskAmount(uid){
+        var url = '<?php echo U('pufinance/Wallet/changeFreeRiskAmount'); ?>'+'&uid='+uid;
+        ui.box.load(url,{title:'风控金额'});
+    }
+    function setUserStatus(uid) {
+        var url = "{:U('pufinance/Wallet/setUserStatus')}&uid=" + uid;
+        ui.box.load(url,{title:'设置黑白名单'});
+    }
+
+    function deleteBankcard(uid, id) {
+        if (confirm('确定要删除该银行卡吗？')) {
+            $.post('{:U("pufinance/Wallet/deleteBankcard")}', {'uid' : uid, 'id' : id}, function (result) {
+                if (result.status) {
+                    ui.success('删除成功');
+                    setTimeout('location.reload()', 400);
+                } else {
+                    ui.error(result.info);
+                }
+            }, 'json');
+        }
+    }
+</script>
+<include file="../Public/footer" />

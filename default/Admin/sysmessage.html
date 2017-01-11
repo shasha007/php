@@ -1,0 +1,113 @@
+<include file="../Public/header" />
+<div class="so_main">
+    <include file="../Public/tabs" />
+    <include file="userTab" />
+
+    <form action="{:U('pufinance/Admin/doSysmessage')}" method="post">
+        <div class="form2">
+            <dl class="lineD">
+                <dt>发送对象：<span style="color: #F00">*</span></dt>
+                <dd>
+                    <select name="type">
+                        <option value="2">学校</option>
+                        <option value="1">学生</option>
+                    </select>
+                </dd>
+            </dl>
+            <dl class="lineD">
+                <dt>学校：</dt>
+                <dd>
+                    <select name="provinceid" onchange="getSchools(this)">
+                        <option value="0">--请选择学校--</option>
+                        <volist name="provinces" id="vo">
+                            <option value="{$vo.id}">{$vo.short} {$vo.title}</option>
+                        </volist>
+                    </select><div style="display:none;"></div><span style="color: #F00">发送对象是学校时有效，多个UID用英文“,”分隔</span>
+                </dd>
+            </dl>
+            <dl class="lineD">
+                <dt>学生UID：</dt>
+                <dd>
+                    <textarea name="uids" cols="50" rows="10"></textarea>
+                    <span style="color: #F00">发送对象是学生时有效，多个UID用英文“,”分隔</span>
+                </dd>
+            </dl>
+
+            <dl class="lineD">
+                <dt>标题：<span style="color: #F00">*</span></dt>
+                <dd>
+                    <input name="title" type="text" value="" size="50">
+                </dd>
+            </dl>
+
+            <dl class="lineD">
+                <dt>内容：<span style="color: #F00">*</span></dt>
+                <dd>
+                    <textarea name="content" cols="50" rows="10"></textarea>
+                </dd>
+            </dl>
+
+
+            <div class="page_btm">
+                <input type="submit" class="btn_b" value="提 交" />
+            </div>
+        </div>
+    </form>
+
+    <div class="list">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+                <th>ID</th>
+                <th>标题</th>
+                <th>内容</th>
+                <th>对象</th>
+                <th>对象值</th>
+                <th>时间</th>
+            </tr>
+            <volist name="list" id="vo">
+                <tr overstyle='on'>
+                    <td>{$vo.id}</td>
+                    <td>{$vo.title}</td>
+                    <td>{$vo.content}</td>
+                    <td><?php echo $vo['type'] == 1 ? '学生' : '学校'?></td>
+                    <td>{$vo.alias}</td>
+                    <td>{$vo.ctime|date='Y-m-d H:i:s', ###}</td>
+
+                </tr>
+            </volist>
+
+        </table>
+    </div>
+</div>
+<script>
+    function getSchools(obj) {
+        var pid = obj.value;
+        var div = $(obj).siblings('div');
+        if (pid) {
+            $.post("{:U('pufinance/Admin/getSchools')}", {'pid' : pid}, function (result) {
+                var html = '<input  type="checkbox" onclick="checkAll(this)"/>全部';
+                if (result.status) {
+                    $.each(result.data, function (i, n) {
+                        html += '<input name="sids[]" type="checkbox" value="'+n.id+'">' + n.title;
+                    });
+                }
+                div.show().html(html);
+            }, 'json');
+        }
+
+    }
+    function checkAll(o){
+        if( o.checked == true ){
+            $('input[name="sids[]"]').attr('checked', true);
+        }else{
+            $('input[name="sids[]"]').attr('checked', false);
+
+        }
+    }
+    $(function () {
+
+    });
+</script>
+
+
+<include file="../Public/footer" />

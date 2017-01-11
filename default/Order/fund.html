@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>我的申请</title>
+    <link href="../Public/css/style.css" rel="stylesheet">
+    <link href="../Public/css/reset.css" rel="stylesheet">
+</head>
+<body>
+<div id="L-foundationitem">
+    <div>
+        <button id="L-btn1" class="L-btn1" onclick="change_div('hdjijin')">活动基金</button>
+        <button id="L-btn2" class="L-btn2" onclick="change_div('cyjijin')">创业基金</button>
+    </div>
+</div>
+<!--活动基金-->
+<article class="L-foundation" id="L-foundation">
+<if condition="is_array($fund)">
+
+        <volist name="fund" id="vo">
+            <section>
+                <div>
+                    <p>{$vo.title}</p>
+                    <p>{$vo.cTime|date='Y/m/d', ###}</p>
+                </div>
+                <p>申请金额：<span>¥ {$vo.fund}</span></p>
+                <p class="L-loan">放款金额：<span>¥ {$vo.audltFund}</span></p>
+                <eq name="vo.state" value="0">
+                    <p class="L-result">待审核</p>
+                </eq>
+                <eq name="vo.state" value="-1">
+                    <p class="L-result">已驳回</p>
+                </eq>
+                <eq name="vo.state" value="1">
+                    <eq name="vo.loanState" value="1">
+                        <p class="L-result">已放款</p>
+                        <else />
+                        <p class="L-result2">放款中</p>
+                    </eq>
+                </eq>
+            </section>
+        </volist>
+
+<else />
+    <!--无明细时显示-->
+    <div class="none_error">
+        <img class="img-responsive" src="../Public/img/none_error.png">
+        <p style="text-align: center;">暂无任何明细</p>
+    </div>
+</if>
+</article>
+
+<!--创业基金-->
+<article class="L-workfoundation" id="L-workfoundation">
+<if condition="is_array($cy)">
+
+        <volist name="cy" id="vo">
+            <section>
+                <div>
+                    <p>{$vo.title}</p>
+                    <p>{$vo.cTime|date='Y/m/d', ###}</p>
+                </div>
+                <p>申请金额：<span>¥ {$vo.needMoney}</span></p>
+                <p class="L-loan">放款金额：<span>¥ {$vo.getMoney}</span></p>
+                <eq name="vo.status" value="0">
+                    <p class="L-result">待审核</p>
+                </eq>
+                <eq name="vo.status" value="-1">
+                    <p class="L-result">已驳回</p>
+                </eq>
+                <eq name="vo.status" value="1">
+                    <p class="L-result2">放款中</p>
+                </eq>
+                <eq name="vo.status" value="2">
+                    <p class="L-result">已放款</p>
+                </eq>
+            </section>
+        </volist>
+<else />
+    <!--无明细时显示-->
+    <div class="none_error">
+        <img class="img-responsive" src="../Public/img/none_error.png">
+        <p style="text-align: center;">暂无任何明细</p>
+    </div>
+</if>
+</article>
+
+<neq name="client" value="app">
+    <include file="../Public/footer_nav" />
+</neq>
+</body>
+</html>
+<script type="text/javascript" src="../Public/js/foundation.js"></script>
+
+

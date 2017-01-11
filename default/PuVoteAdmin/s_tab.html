@@ -1,0 +1,19 @@
+<div class="tit_tab">
+    <ul>
+        <li>
+            <a href="{:U('pufinance/SchoolVoteAdmin/index')}"
+            <?php if(ACTION_NAME=="index"):?>
+            class="on"
+            <?php endif;?>
+            >参赛学校</a>
+        </li>
+        <li>
+            <a href="{:U('pufinance/SchoolVoteAdmin/log')}"
+            <?php if(ACTION_NAME == 'log'):?>
+            class="on"
+            <?php endif;?>
+            >投票记录</a>
+        </li>
+
+    </ul>
+</div>

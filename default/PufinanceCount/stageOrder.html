@@ -1,0 +1,22 @@
+<include file="../Public/header" />
+<script type="text/javascript" src="../Public/js/laydate/laydate.js"></script>
+<div class="so_main">
+    <include file="../Public/tabs" />
+    <include file="countTab" />
+
+    <div class="Toolbar_inbox">
+        <form method="post" action="__URL__&act=doStageOrder">
+            应还款起止时间：<input onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" class="laydate-icon" style="width:200px; margin-right:10px;" name="ctimes" value="" /> -  <input onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" class="laydate-icon" style="width:200px;" value="" name="ctimee" /><br/>
+
+            分期状态: <select name="status">
+            <option value="all">--请选择分期状态--</option>
+            <option value="0">还款中</option>
+            <option value="1">已结清</option>
+        </select><br/>
+            <input type="submit" class="btn_b" value="导出订单" />
+        </form>
+    </div>
+
+</div>
+
+<include file="../Public/footer" />

@@ -1,0 +1,33 @@
+<div class="page_tit">投票活动管理</div>
+<div class="tit_tab">
+    <ul>
+        <li>
+            <a href="{:U('pufinance/PuVoteAdmin/index')}"
+               <?php if(ACTION_NAME=="index"):?>
+                    class="on"
+                <?php endif;?>
+            >投票活动</a>
+        </li>
+        <li>
+            <a href="{:U('pufinance/PuVoteAdmin/item')}"
+               <?php if(ACTION_NAME=='item'):?>
+                    class="on"
+                <?php endif;?>
+            >投票选项</a>
+        </li>
+        <li>
+            <a href="{:U('pufinance/PuVoteAdmin/record')}"
+            <?php if(ACTION_NAME=='record'):?>
+            class="on"
+            <?php endif;?>
+            >投票记录</a>
+        </li>
+        <li>
+            <a href="{:U('pufinance/PuVoteAdmin/school')}"
+            <?php if(ACTION_NAME=="school" || ACTION_NAME=='log'):?>
+            class="on"
+            <?php endif;?>
+            >最美校园</a>
+        </li>
+    </ul>
+</div>

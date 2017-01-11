@@ -1,0 +1,128 @@
+<div class="form2">
+    <form id="form">
+        <dl class="lineD">
+            <dt>活动名称：<span style="color: #F00">*</span></dt>
+            <dd>
+                <input name="name" type="text" value="{$info.name}" size="20">
+            </dd>
+        </dl>
+
+        <dl class="lineD">
+            <dt>介绍：<span style="color: #F00">*</span></dt>
+            <dd>
+                <textarea name="intro" cols="30" rows="10">{$info.intro}</textarea>
+            </dd>
+        </dl>
+
+        <dl class="lineD">
+            <dt>封面：<span style="color: #F00">*</span></dt>
+            <dd>
+                <input id="icon" name="icon" type="file" value="">
+            </dd>
+        </dl>
+
+        <dl class="lineD">
+            <dt>活动起止时间：</dt>
+            <dd>
+                <input type="text" id="stime" name="stime" value="<?php echo isset($info['stime']) ? date('Y-m-d H:i:s', $info['stime']) : ''?>" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
+                - <input  type="text" id="etime" name="etime" value="<?php echo isset($info['etime']) ? date('Y-m-d H:i:s', $info['etime']) : ''?>" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">&nbsp;
+
+            </dd>
+        </dl>
+
+        <dl class="lineD">
+            <dt>PU用户每人每天投票数：<span style="color: #F00">*</span></dt>
+            <dd>
+                <input name="pu_pre_vote" type="text" value="{$info.pu_pre_vote}" size="20">
+            </dd>
+        </dl>
+
+        <dl class="lineD">
+            <dt>投票有效类型：</dt>
+            <dd>
+                <label><input type="radio" name="is_vaild" value="0" <eq name="info.is_vaild" value="0">checked</eq>>单投即有效</label>
+                <label><input type="radio" name="is_vaild" value="1" <eq name="info.is_vaild" value="1">checked</eq>>全投才有效</label>
+
+            </dd>
+        </dl>
+
+        <dl class="lineD">
+            <dt>微信投票：</dt>
+            <dd>
+                <label><input type="radio" name="allow_wechat" value="1" <eq name="info.allow_wechat" value="1">checked</eq>>开启</label>
+                <label><input type="radio" name="allow_wechat" value="0" <eq name="info.allow_wechat" value="0">checked</eq>>关闭</label>
+            </dd>
+        </dl>
+
+        <dl class="lineD">
+            <dt>微信用户每人每天投票数：<span style="color: #F00">*</span></dt>
+            <dd>
+                <input name="wechat_pre_vote" type="text" value="{$info.wechat_pre_vote}" size="20">
+                <span style="margin-left: 30px;color: red;">微信投票开启后有效</span>
+            </dd>
+        </dl>
+
+        <dl class="lineD">
+            <dt>报名：</dt>
+            <dd>
+                <label><input type="radio" name="allow_apply" value="1" <eq name="info.allow_apply" value="1">checked</eq>>开启</label>
+                <label><input type="radio" name="allow_apply" value="0" <eq name="info.allow_apply" value="0">checked</eq>>关闭</label>
+            </dd>
+        </dl>
+
+        <dl class="lineD">
+            <dt>投票总开关：</dt>
+            <dd>
+                <label><input type="radio" name="allow_vote" value="1" <eq name="info.allow_vote" value="1">checked</eq>>开启</label>
+                <label><input type="radio" name="allow_vote" value="0" <eq name="info.allow_vote" value="0">checked</eq>>关闭</label>
+            </dd>
+        </dl>
+
+<!--        <dl class="lineD">
+            <dt>允许重复投票：</dt>
+            <dd>
+                <label><input type="radio" name="allow_repeat" value="2" <eq name="info.allow_repeat" value="2">checked</eq>>完全允许</label>
+                <label><input type="radio" name="allow_repeat" value="1" <eq name="info.allow_repeat" value="1">checked</eq>>每天不允许</label>
+                <label><input type="radio" name="allow_repeat" value="0" <eq name="info.allow_repeat" value="0">checked</eq>>完全不允许</label>
+            </dd>
+        </dl>-->
+
+        <div class="page_btm">
+            <input type="button" class="btn_b" value="提 交" />
+            <input type="hidden" name="id" value="{$info.id|default=0}">
+        </div>
+    </form>
+
+</div>
+<script type="text/javascript" src="__PUBLIC__/js/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jquery-migrate-1.4.1.min.js"></script>
+
+<script>
+    $(function () {
+
+        $('.btn_b').click(function () {
+
+            var formData = new FormData(document.getElementById('form'));
+            $.ajax({
+                url: "{:U('Pufinance/PuVoteAdmin/saveVote')}",
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                dataType: 'json',
+                success: function (result) {
+                    if (result.status) {
+                        ui.box.close();
+                        ui.success(result.info);
+                        setTimeout(function(){location.reload();},1500);
+                    } else {
+//                    ui.box.close();
+                        ui.error(result.info);
+                        return false;
+                    }
+                }
+            });
+
+        });
+    });
+</script>

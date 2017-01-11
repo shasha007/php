@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <link href="../Public/css/bootstrap.min.css" rel="stylesheet">
+    <link href="__PUBLIC__/lottery/{$lottery.id}/css/reset.css" rel="stylesheet">
+    <link href="__PUBLIC__/lottery/{$lottery.id}/css/style.css" rel="stylesheet">
+    <title>{$lottery.title}</title>
+</head>
+<body class="L-spirit-rule" style="height:100%;">
+
+<article  class="L-spirit-index-article">
+    <h3>活动规则：</h3>
+    <p>1.&emsp13;PU用户首次由活动界面体验充值PU币可获得抽奖券（所充值金额皆在本人PU账号下，1PU币=1元人民币。PU账户余额可免费进行提现，偷偷告诉你实际上本次活动是可以免费抽奖的哦）单笔充值9.9元可获得2张抽奖券，19.8元可获得4张抽奖券。</p>
+    <p>2.&emsp13;所有PU用户参与活动抽奖后即可获得该活动的邀请码，分享邀请码给其他PU用户，被邀请人使用当前邀请人的邀请码参与活动，则邀请人和被邀请人各获得一张抽奖券，每个用户可以多次分享邀请码，获得的奖券无上限，被邀请人只能使用一个用户的邀请码。</p>
+    <p>3.&emsp13;关注“PU加”公众号，发送“玛丽玛丽轰+姓名+UID”（例如：玛丽玛丽轰张三0455）至公众号，由工作人员核验无误后，即赠送一张抽奖券，每位用户限一次。提示：用户UID在我的二维码名片下方。</p>
+    <p>4.&emsp13;除充值、分享、邀请码获得免费抽奖券外，用户每天可消耗5PU币购买1张抽奖券，每日限一次。</p>
+    <p>5.&emsp13;PU工作人员将根据中奖用户预留信息于七个工作日内联系发放奖品，如奖品为游戏皮肤，届时会要求中奖用户提供游戏账号。</p>
+    <p>6.&emsp13;活动结束前PU中奖用户填写的信息无法取得联系则视为中奖用户自动放弃。</p>
+    <p>7.&emsp13;所有奖品和活动均与苹果公司无关。</p>
+    <p>8.&emsp13;活动时间：{$lottery.stime|date='Y年m月d日', ###}到{$lottery.etime|date='Y年m月d日', ###}。</p>
+    <p>9.&emsp13;本次活动的最终解释权归PU口袋校园天平所有。</p>
+    <h3>奖项设置：</h3>
+    <p>(&emsp13;奖项图片仅供参考，一切以实物为准&emsp13;)</p>
+    <ul class="L-prize-div clearfix">
+        <volist name="prizes" id="prize">
+            <li class="L-prize-li">
+                <img class="img-responsive" src="<?=PIC_URL?>/data/uploads/{$prize.pic}">
+
+                <div>
+                    <p>{$prize.name}</p>
+                    <if condition="!empty($prize['desc'])">
+                        <p>单价：{$prize.desc}</p>
+                    </if>
+                </div>
+            </li>
+        </volist>
+    </ul>
+</article>
+
+</body>
+</html>

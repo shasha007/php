@@ -1,0 +1,47 @@
+<include file="../Public/header" />
+<script type="text/javascript" src="../Public/js/laydate/laydate.js"></script>
+<link href="__PUBLIC__/admin/css/chosen.min.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__PUBLIC__/js/chosen.jquery.min.js"></script>
+<div class="so_main">
+
+    <div id="searchBlog_div">
+    <div class="page_tit">导出</div>
+    <div class="form2">
+        <form action="{:U('pufinance/StockAdmin/export')}" method="post">
+            <dl class="lineD">
+                <dt>报名时间起止：</dt>
+                <dd>
+                    <input name="sctime" type="text" value="" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" /> -
+                    <input name="ectime" type="text" value="" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" />   <span style="color:red;"></span>
+                </dd>
+            </dl>
+            <dl class="lineD">
+                <dt>学校：</dt>
+                <dd>
+                    <select class="chosen" name="sid" id='sid'>
+                        <option value="">全部</option>
+                        <volist name="tree" id="vo">
+                            <option value="{$vo.a}">{$vo.pinyin} - {$vo.t}</option>
+                        </volist>
+                    </select>
+                </dd>
+            </dl>
+
+            <div class="page_btm">
+                <input type="submit" class="btn_b" value="数据导出" />
+            </div>
+        </form>
+    </div>
+    </div>
+</div>
+
+<script>
+    /**
+     * 下拉选择搜索
+     */
+    (function($){
+        $('select.chosen').chosen({width: "500px",search_contains:true});
+    })(jQuery);
+
+</script>
+<include file="../Public/footer" />

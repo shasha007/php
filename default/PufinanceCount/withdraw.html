@@ -1,0 +1,37 @@
+<include file="../Public/header" />
+<script type="text/javascript" src="../Public/js/laydate/laydate.js"></script>
+<div class="so_main">
+    <?php if($uid == '3000639'):?>
+    <div class="tit_tab">
+        <ul>
+            <li><a href="{:U('pufinance/PufinanceOrder/orderList')}">康欣放款管理</a>
+            </li>
+            <li><a href="{:U('pufinance/PufinanceCount/index')}" <?php if(MODULE_NAME == 'PufinanceCount'):?>class="on"<?php endif;?>>统计中心</a>
+            </li>
+            <li><a href="{:U('pufinance/Admin/transaction',array('t'=>1))}" <?php if(MODULE_NAME == 'Admin'):?>class="on"<?php endif;?>>提现</a>
+            </li>
+        </ul>
+    </div>
+    <?php else:?>
+    <include file="../Public/tabs" />
+    <include file="countTab" />
+    <?php endif;?>
+
+    <div class="Toolbar_inbox">
+        <form method="post" action="__URL__&act=doWithdraw">
+            申请起止时间：<input onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" class="laydate-icon" style="width:200px; margin-right:10px;" name="start" value="" /> -  <input onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" class="laydate-icon" style="width:200px;" value="" name="end" /><br/>
+            放款起止时间：<input onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" class="laydate-icon" style="width:200px; margin-right:10px;" name="sloan" value="" /> -  <input onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" class="laydate-icon" style="width:200px;" value="" name="eloan" /><br/>
+            订单状态: <select name="chk_status">
+            <option value="all">--请选择订单状态--</option>
+            <option value="0">待审核</option>
+            <option value="1">已审核（待放款）</option>
+            <option value="3">已放款</option>
+            <option value="2">已驳回</option>
+        </select><br/>
+            <input type="submit" class="btn_b" value="导出订单" />
+        </form>
+    </div>
+
+</div>
+
+<include file="../Public/footer" />

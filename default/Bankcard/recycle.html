@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>回收站</title>
+    <link href="../Public/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../Public/css/style.css" rel="stylesheet">
+    <link href="../Public/css/reset.css" rel="stylesheet">
+
+</head>
+<body>
+
+<div class="modal fade" id="h-card-remove" >
+    <div class="modal-dialog">
+        <div class="modal-content h-card-m-r clearfix">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">
+                    确认还原?
+                </h4>
+            </div>
+            <div class="modal-body"  data-dismiss="modal">
+                取消
+            </div>
+            <div class="modal-body h-color-red" id="modal-restore">
+                还原
+            </div>
+        </div>
+    </div>
+</div>
+<div class="h-card-info">
+    <ul class="">
+        <volist name="list" id="vo">
+        <li class="clearfix container">
+            <div class="h-bank-card bank-{$vo.bank_id} h-card">
+                <p class="clearfix container">
+                    <img class="img-responsive" src="../Public/img/bank/bank-{$vo.bank_id}.png">
+                    <span>{$vo.bank_name}储蓄卡</span>
+                    <span class="h-card-re pull-right bank-color-{$vo.bank_id}" onclick="restore('{$vo.id}')">
+                        还原
+                    </span>
+                </p>
+
+                <p><i class="h-point"></i>
+                    <i class="h-point"></i>
+                    <i class="h-point"></i>
+                    <i class="h-point"></i>
+                    &emsp13;
+                    <i class="h-point"></i>
+                    <i class="h-point"></i>
+                    <i class="h-point"></i>
+                    <i class="h-point"></i>
+                    &emsp13;
+                    <i class="h-point"></i>
+                    <i class="h-point"></i>
+                    <i class="h-point"></i>
+                    <i class="h-point"></i>
+                    <i>{$vo.card_no|substr=###, -4}</i>
+                </p>
+            </div>
+        </li>
+        </volist>
+
+    </ul>
+</div>
+
+
+</body>
+<script type="text/javascript" src="__PUBLIC__/js/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="../Public/js/bootstrap.min.js"></script>
+<script src="../Public/js/mainScript.js"></script>
+<script>
+    setActionBar('回收站', '', '');
+    var bid = 0;
+    function restore(id) {
+        bid = id;
+        $('#h-card-remove').modal('show');
+    }
+    $('#modal-restore').click(function () {
+        $.post('{:U("pufinance/Bankcard/restore")}', {'id' : bid}, function (result) {
+            if (result.status) {
+                $('#h-card-remove').modal('hide');
+                alert('还原银行卡完成！');
+                location.href = '{:U("pufinance/Bankcard/index")}';
+            } else {
+                $('#h-card-remove').modal('hide');
+                alert(result.info);
+                return false;
+            }
+        }, 'json');
+    });
+</script>
+</html>

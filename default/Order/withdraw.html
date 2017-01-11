@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>提现订单</title>
+    <link href="../Public/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../Public/css/style.css?v=001" rel="stylesheet">
+    <link href="../Public/css/reset.css?v=001" rel="stylesheet">
+</head>
+
+<body>
+
+<header class="h-puj h-_WiOd clearfix">
+    <div class="h-puj-on" data-ptype="0">全部</div>
+    <div data-ptype="1">审核中</div>
+    <div data-ptype="2">待放款</div>
+    <div data-ptype="4">已放款</div>
+    <div data-ptype="3">已驳回</div>
+</header>
+<div class="h-fqsc">
+    <ul>
+
+    </ul>
+</div>
+
+<!--todo 为空时显示-->
+<div class="h-repayNoTip" style="display: none;">
+    <img  src="../Public/img/NoRecord.png">
+</div>
+
+<neq name="client" value="app">
+    <include file="../Public/footer_nav" />
+</neq>
+
+</body>
+<script src="__PUBLIC__/js/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="../Public/js/mainScript.js" ></script>
+<script>
+    setActionBar('提现订单', '', '');
+    if (typeof(Android) == "undefined") {
+        $(".h-fqsc").css({"margin-bottom":"65px","padding-bottom":"5px"});
+    }
+    var URL = '{:U("pufinance/Order/getWithdraw")}';
+</script>
+<script src="../Public/js/order.js"></script>
+
+</html>
+
+

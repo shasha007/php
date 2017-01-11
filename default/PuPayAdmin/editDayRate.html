@@ -1,0 +1,47 @@
+<div class="form2">
+
+    <dl class="lineD">
+        <dt>合作方ID：<span style="color: #F00">*</span></dt>
+        <dd>
+            {$partner_id}
+            <input type="hidden" name="partner_id" value="{$partner_id}">
+        </dd>
+    </dl>
+
+    <?php for($i = 1; $i <= 12; $i++):?>
+    <dl class="lineD">
+        <dt>{$i}期日利率： </dt>
+        <dd>
+            万分之 <input name="rate[{$i}]" type="text" value="{$rate[$i]}" size="20">
+            <span style="color: #F00">最多保留4位小数</span>
+        </dd>
+    </dl>
+    <?php endfor;?>
+
+
+    <div class="page_btm">
+        <input type="button" class="btn_b" value="提 交" />
+    </div>
+</div>
+<script>
+    $(function () {
+        $('.btn_b').click(function () {
+            var rsa_key = $('#rsa_key').val();
+            if (rsa_key == '') {
+                ui.error('请填写RSA公钥');
+                return false;
+            }
+            $.post("{:U('pufinance/PuPayAdmin/saveDayRate')}", $('.lineD').find('input').serialize(), function(result) {
+                if (result.status) {
+                    ui.box.close();
+                    ui.success(result.info);
+                    setTimeout(function(){location.reload();},1500);
+                } else {
+//                    ui.box.close();
+                    ui.error(result.info);
+                    return false;
+                }
+            }, 'json');
+        });
+    });
+</script>

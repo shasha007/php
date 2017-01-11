@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <link href="../Public/css/bootstrap.min.css" rel="stylesheet">
+    <link href="__PUBLIC__/lottery/{$lottery.id}/css/reset.css" rel="stylesheet">
+    <link href="__PUBLIC__/lottery/{$lottery.id}/css/style.css" rel="stylesheet">
+
+    <title>{$lottery.title}</title>
+</head>
+<body class="L-spirit-rule" style="height:100%;">
+<h3 class="L-myPrize-title">我的奖品</h3>
+<if condition="$records">
+<div class="L-myPrize-con">
+    <ul>
+        <volist name="records" id="vo">
+            <li>
+                <span class="L-left-name">{$prizes[$vo['prize_id']]['name']}</span>
+                <span class="L-right-time">{$vo.ctime|friendlyDate}</span>
+            </li>
+        </volist>
+    </ul>
+</div>
+
+
+<a class="L-spirit-draw-a" href="{:U('Pufinance/Lottery/address')}&lottery_id={$lottery.id}">
+    <img class="mypr-addres-btn" src="__PUBLIC__/lottery/{$lottery.id}/img/addres.png">
+</a>
+<else />
+    <!--没有奖品-->
+    <div class="L-prizeEmpty">
+        <img src="__PUBLIC__/lottery/{$lottery.id}/img/noPrize.png">
+    </div>
+</if>
+
+</body>
+</html>

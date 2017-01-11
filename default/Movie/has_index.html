@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="">
+<head>
+    <meta charset="utf-8">
+    <title>我的记录</title>
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>    <title>ticket</title>
+    <link rel="stylesheet" href="../Public/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../Public/css/reset.min.css">
+    <link rel="stylesheet" href="../Public/css/main.css?v=0.01">
+    <style>
+        html{
+            height: 100%;
+        }
+        body {
+            background: url("../Public/images/bg1.jpg") repeat-y;
+            background-size: 100% 100%;
+        }
+        .modal-dialog{
+            height: auto;
+        }
+        .modal-content{
+            text-align: center;
+            height: auto;
+        }
+        .modal-content >h1{
+            margin: 5px 0;
+        }
+        .modal-content >h2{
+            margin: 5px 0 15px 0;
+        }
+        .modal-header{
+            border: none;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body style="height: 100%;">
+<header class="ticket_header">
+    <img src="../Public/images/header.png">
+
+</header>
+<div class="record_title">
+    <h3>我的序号： {$movie_user.sid}</h3>
+    <p><span class="open_rule" data-url="{:U('Pufinance/Movie/rule')}">规则</span></p>
+</div>
+<img  class="record_img" src="../Public/images/record.png">
+<div class="record_artc">
+    <header>
+        <p>序号</p>
+        <p>姓名</p>
+        <p>学号</p>
+    </header>
+    <ul class="record_ul">
+        <volist name="prev" id="p">
+            <li>
+                <p>{$p.sid}</p>
+                <p>{$p.uid|getUserRealName}</p>
+                <p><?php echo getUserEmailNum(getUserEmail($p['uid']))?></p>
+            </li>
+        </volist>
+        <li class="record_my">
+            <p>{$movie_user.sid}</p>
+            <p>{$movie_user.uid|getUserRealName}</p>
+            <p><?php echo getUserEmailNum(getUserEmail($movie_user['uid']))?></p>
+        </li>
+        <volist name="next" id="n">
+            <li>
+                <p>{$n.sid}</p>
+                <p>{$n.uid|getUserRealName}</p>
+                <p><?php echo getUserEmailNum(getUserEmail($n['uid']))?></p>
+            </li>
+        </volist>
+    </ul>
+</div>
+<eq name="movie_status" value="1">
+<div class="modal fade" id="atari">
+    <div class="modal-dialog modal-dialog1">
+
+
+        <eq name="movie_user.is_luck" value="1">
+            <div class="success">
+                <img src="../Public/images/success.png">
+                <h1>抢票成功</h1>
+                <h3>您的活动序号为:<span>{$movie_user.sid}</span></h3>
+            </div>
+            <else />
+            <div class="fail">
+                <img src="../Public/images/fail.png">
+                <h1>哎！电影票丢了</h1>
+                <h3>您的活动序号为:<span>{$movie_user.sid}</span></h3>
+            </div>
+        </eq>
+
+    </div>
+</div>
+</eq>
+
+<footer class="record_footer">
+    <img src="../Public/images/record1.png">
+</footer>
+</body>
+<script src="__PUBLIC__/js/jquery-2.1.1.min.js"></script>
+<script src="../Public/js/bootstrap.min.js"></script>
+<script src="../Public/js/main.js"></script>
+<eq name="movie_status" value="1">
+    <script>
+        $('#atari').modal('show');
+    </script>
+</eq>
+<script src="../Public/js/mainScript.js"></script>
+<script>
+    setActionBar('我的记录', '', '');
+</script>
+</html>

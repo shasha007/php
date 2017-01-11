@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <link href="../Public/css/bootstrap.min.css" rel="stylesheet">
+    <link href="__PUBLIC__/lottery/{$lottery.id}/css/swiper-3.3.1.min.css" rel="stylesheet">
+    <link href="__PUBLIC__/lottery/{$lottery.id}/css/reset.css" rel="stylesheet">
+    <link href="__PUBLIC__/lottery/{$lottery.id}/css/style.css" rel="stylesheet">
+
+    <title>{$lottery.title}</title>
+</head>
+<body class="L-spirit-index" style="height:100%;">
+
+<!--<div class="L-spirit-index-article1">恭喜<span>***</span>&nbsp;&nbsp;(学校)&nbsp;&nbsp;<span>***</span>&nbsp;&nbsp;(姓名)&nbsp;&nbsp;获得<span>***</span>奖品</div>-->
+<header>
+		<img src="__PUBLIC__/lottery/{$lottery.id}/img/indexBg.png" style="width: 100%;" />
+		<img src="__PUBLIC__/lottery/{$lottery.id}/img/mamalihong1.png" />
+</header>
+<div class="swiper-container swiper-index">
+    <div class="swiper-wrapper">
+
+        <volist name="records" id="vo">
+            <div class="swiper-slide">
+                <div class="L-spirit-index-article1">恭喜
+                    <span>{$vo.uid|tsGetSchoolByUid0}</span>&nbsp;&nbsp;
+                    <span>{$vo.uid|getUserField=###,realname}</span>
+                    获得<span>{$prizes[$vo['prize_id']]['name']}</span>
+
+                </div>
+            </div>
+        </volist>
+    </div>
+    <!-- 如果需要分页器 -->
+    <!--<div class="swiper-pagination"></div>-->
+</div>
+
+<p class="L-spirit-index-article2">
+    我的抽奖券：&nbsp;&nbsp;<span>{$lotteryUser.times|default=0}</span>张&nbsp;&nbsp;
+    <if condition="$recharge">
+        <a href="{:U('Pufinance/Lottery/recharge')}&lottery_id={$lottery.id}">获取抽奖券></a>
+    </if>
+    <if condition="$pay">
+        <a href="{:U('Pufinance/Lottery/pay')}&lottery_id={$lottery.id}&type=1">获取抽奖券></a>
+    </if>
+
+</p>
+
+<a class="L-spirit-index-join" href="{:U('Pufinance/Lottery/draw')}&lottery_id={$lottery.id}">
+    <img class="go-join-btn" src="__PUBLIC__/lottery/2/img/goCanjia.png">
+</a>
+
+<div class="L-footer-div">
+    <a class="L-spirit-footer" href="{:U('Pufinance/Lottery/rule')}&lottery_id={$lottery.id}" style="color: RGB(220,197,161);text-decoration: underline;">活动规则</a>
+    <if condition="empty($lotteryUser['invite_code'])">
+        <if condition="$client == 'app'">
+            <a class="L-spirit-footer2" id="share-lottery" href="javascript:void(0);" style="color: RGB(220,197,161);text-decoration: underline;">分享活动</a>
+        </if>
+    <else />
+        <a class="L-spirit-footer2" href="{:U('Pufinance/Lottery/share')}&lottery_id={$lottery.id}" style="color: RGB(220,197,161);text-decoration: underline;">分享我的邀请码</a>
+    </if>
+
+</div>
+
+<if condition="!$hadinvite">
+    <div class="L-merry-footer">
+        <span>输入邀请码</span>&nbsp;&nbsp;
+        <input type="text" id="code" />&nbsp;&nbsp;
+        <img class="L-merry-submit" src="__PUBLIC__/lottery/2/img/submit.png" />
+    </div>
+    <p class="L-merry-footer2">友情提示：填写他人邀请码，双方将各自额外获得一张免费抽奖券！</p>
+</if>
+
+</body>
+<script src="__PUBLIC__/js/jquery-2.1.1.min.js"></script>
+<script src="../Public/js/bootstrap.min.js"></script>
+<script src="__PUBLIC__/lottery/{$lottery.id}/js/swiper-3.3.1.min.js"></script>
+<script src="../Public/js/mainScript.js"></script>
+<script src="__PUBLIC__/lottery/js/loading.js"></script>
+<script>
+    setActionBar('{$vote.name}', '', '');
+
+    window.onload=function(){
+        var mySwiper = new Swiper ('.swiper-container', {
+            direction: 'horizontal',
+            loop: true,
+            autoplay:3000,
+            // 如果需要分页器
+            pagination: '.swiper-pagination',
+
+
+        });
+    }
+    $(function () {
+        $('.L-merry-submit').click(function () {
+            var code = $('#code').val();
+            if (code == '') {
+                alert('请输入邀请码');
+                $('#code').focus();
+                return false;
+            }
+            loading.show();
+            $.post('{:U("Pufinance/Lottery/doInvite", array("lottery_id" => $lottery["id"]))}', {
+                'code': code
+            }, function (result) {
+                loading.hide();
+                if (result.status) {
+                    alert('恭喜你获得一张抽奖券');
+                    window.location.reload();
+                } else {
+                    alert(result.info);
+                    return false;
+                }
+            }, 'json');
+        });
+
+        $('#share-lottery').click(function () {
+            Android.share(
+                "我在PU抽大奖，你也可以，快来参与！ {:U('Pufinance/Lottery/index')}&lottery_id={$lottery.id}",
+                "我在PU抽大奖，你也可以，快来参与！",
+                "{:U('Pufinance/Lottery/index')}&lottery_id={$lottery.id}",
+                "<?=SITE_URL?>/public/lottery/{$lottery.id}/img/share.jpeg"
+            );
+        });
+    });
+</script>
+</html>

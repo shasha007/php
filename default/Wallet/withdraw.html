@@ -1,0 +1,205 @@
+<include file="../Public/header" />
+<div class="so_main">
+	<?php if($uid == '3000639'):?>
+	<div class="tit_tab">
+		<ul>
+			<li><a href="{:U('pufinance/PufinanceOrder/orderList')}" <?php if(MODULE_NAME == 'PufinanceOrder'):?>class="on"<?php endif;?>>康欣放款管理</a>
+			</li>
+			<li><a href="{:U('pufinance/PufinanceCount/index')}" <?php if(MODULE_NAME == 'PufinanceCount'):?>class="on"<?php endif;?>>统计中心</a>
+			</li>
+			<li><a href="{:U('pufinance/Wallet/withdraw')}" <?php if(MODULE_NAME == 'Wallet'):?>class="on"<?php endif;?>>提现</a>
+			</li>
+		</ul>
+	</div>
+	<?php else:?>
+    <include file="../Public/tabs" />
+	<include file="walletTab" />
+	<hr>
+	<?php endif;?>
+    <div class="Toolbar_inbox">
+        <form action="__URL__">
+			<input type="hidden" name="app" value="pufinance"/>
+			<input type="hidden" name="mod" value="Wallet"/>
+			<input type="hidden" name="act" value="withdraw"/>
+			用户UID：<input type="number" min="1" value="{$Think.get.uid}" name="uid" />&nbsp;&nbsp;
+			姓名：<input name="realname" type="text" value="{$Think.get.realname}">&nbsp;&nbsp;
+			身份证号：<input type="text" value="{$Think.get.ctfid}" name="ctfid" />&nbsp;&nbsp;
+            &nbsp;&nbsp;<input type="submit" class="btn_b" value="搜索" />
+        </form>
+        <a href="javascript:void(0);" class="btn_a" onclick="doBatch('agree');"><span>批量通过</span></a>
+        <a href="javascript:void(0);" class="btn_a" onclick="doBatch('loan');"><span>批量放款</span></a>
+        <a href="javascript:void(0);" class="btn_a" onclick="doBatch('reject');"><span>批量驳回</span></a>
+        <span>共{$totalRows}条记录</span>
+        <div class="page right">{$html}</div>
+    </div>
+
+    <div class="list">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+                <th style="width:30px;">
+                    <input type="checkbox" id="checkbox_handle" onclick="checkAll(this)" value="0">
+                    <label for="checkbox"></label>
+                </th>
+				<th>ID</th>
+                <th>用户ID</th>
+                <th>姓名</th>
+                <th>身份证号</th>
+				<th>申请时间</th>
+				<th>提现额度</th>
+				<th>提款到</th>
+				<th>预留手机号</th>
+				<th>贷款机构</th>
+				<th>状态</th>
+				<th>时间</th>
+				<th>操作</th>
+            </tr>
+			<?php foreach($data as $item):?>
+			<tr overstyle='on' id="list_<?php echo $item['id'];?>">
+				<td><input type="checkbox" name="checkbox" value="<?php echo $item['id'];?>"></td>
+				<td><?php echo $item['id'];?></td>
+				<td><?php echo $item['uid'];?></td>
+				<td><?php echo $item['realname'];?></td>
+				<td><?php echo $item['ctfid'];?></td>
+				<td><?php echo date('Y-m-d H:i:s',$item['ctime']);?></td>
+				<td>￥<?php echo number_format($item['money'],2);?></td>
+				<td><?php $bankInfo=get_Order_Bank($item['bank_card_id']); echo $item['bank_name'].' | '.$bankInfo['card_no'];?></td>
+				<td><?php echo $bankInfo['mobile'];?></td>
+				<td><?php echo $item['name'];?></td>
+				<td>
+					<?php if($uid == '3000639'):?>
+						<?php if($item['chk_status'] == 1):?>
+						待放款
+						<?php elseif($item['chk_status'] == 3):?>
+						已放款
+						<?php endif;?>
+					<?php else:?>
+						<?php echo get_withdraw_status($item['chk_status'])?>
+					<?php endif;?>
+				</td>
+				<td>
+					<?php if($item['chk_status'] == 3):?>
+						<?php if(!empty($item['loan_time'])):?><?php echo date('Y-m-d H:i:s',$item['loan_time']);?><?php endif;?>
+					<?php elseif($item['chk_status'] == 1 && $uid == '3000639'):?>
+						
+					<?php else:?>
+						<?php if(!empty($item['chk_status'])):?><?php echo date('Y-m-d H:i:s',$item['chk_time']);?><?php endif;?>
+					<?php endif;?>
+				</td>
+				<td id="opt_<?php echo $item['id']?>">
+					<?php if($uid == '3000639' && $item['chk_status'] == 1):?>
+					<a id="loan<?php echo $item['id'];?>" href="javascript:loan(<?php echo $item['id'];?>);">放款</a>
+					<?php else:?>
+					<?php if($item['chk_status'] == 1):?>
+                    <a id="loan<?php echo $item['id'];?>" href="javascript:loan(<?php echo $item['id'];?>);">放款</a>
+					<?php endif;?>
+					<?php if($item['chk_status'] == 0):?>
+					<a id="agree<?php echo $item['id'];?>" href="javascript:agree(<?php echo $item['id'];?>);">同意</a> | 
+					<a id="reject<?php echo $item['id'];?>" href="javascript:reject(<?php echo $item['id'];?>);">驳回</a>
+					<?php elseif ($item['chk_status'] == 1):?>
+					<?php if ($item['invest_id']):?>
+					<a href="<?php echo U('pufinance/PufinanceOrder/customOrder', array('uid' => $item['uid']));?>">人工订单</a>
+					<?php else: ?>
+					<a href="javascript:void(0);" onclick="setInvest('{$item.bank_card_id}')">指定资金方</a>
+					<?php endif;?>
+					<?php endif;?>
+					<?php endif;?>
+				</td>
+			</tr> 
+			<?php endforeach;?>
+        </table>
+    </div>
+    <div class="Toolbar_inbox">
+        <a href="javascript:void(0);" class="btn_a" onclick="doBatch('agree');"><span>批量通过</span></a>
+        <a href="javascript:void(0);" class="btn_a" onclick="doBatch('loan');"><span>批量放款</span></a>
+        <a href="javascript:void(0);" class="btn_a" onclick="doBatch('reject');"><span>批量驳回</span></a>
+        <span>共{$totalRows}条记录</span>
+        <div class="page right">{$html}</div>
+    </div>
+</div>
+<script type="text/javascript">
+    function checkAll(o){
+        if( o.checked == true ){
+            $('input[name="checkbox"]').attr('checked','true');
+            $('tr[overstyle="on"]').addClass("bg_on");
+        }else{
+            $('input[name="checkbox"]').removeAttr('checked');
+            $('tr[overstyle="on"]').removeClass("bg_on");
+        }
+    }
+
+    function doBatch(type) {
+        var ids = [];
+        $('input[name="checkbox"]:checked').each(function () {
+            ids.push($(this).val());
+        });
+        if (ids.length <= 0) {
+            alert('请选择批量操作的数据');
+            return false;
+        }
+        if (confirm('确定要执行操作吗？')) {
+            $.post('{:U("pufinance/Wallet/doBatch")}', {'ids' : ids.join(','), 'type' : type}, function (result) {
+				if (result.status) {
+                    ui.success('操作完成');
+                    setTimeout('location.reload()', 1500);
+				} else {
+                    ui.error(result.info);
+				}
+            }, 'json');
+        }
+    }
+
+    function setInvest(bank_card_id) {
+        var url = "{:U('pufinance/PufinanceOrder/setInvest')}&bank_card_id=" + bank_card_id;
+        ui.box.load(url,{title:'指定资金方'});
+
+    }
+
+function agree(id){
+	if(!id){
+		return ;
+	}
+	if( confirm( '是否同意用户提现？' ) ){
+		$.post('__URL__&act=doAgree',{id:id},function( res ){
+			if( res.code == 1 ){
+				ui.success( "操作成功" );
+				$('#opt_'+id).html('通过');
+				window.location.reload();
+			}else{
+				ui.error( "设置失败" );
+			}
+		},'json');
+    }
+}
+function reject(id){
+	if(!id){
+		return ;
+	}
+	if( confirm( '是否驳回用户提现？' ) ){
+		$.post('__URL__&act=doReject',{id:id},function( res ){
+			if( res.code == 1 ){
+				ui.success( "操作成功" );
+				$('#opt_'+id).html('未通过');
+			}else{
+				ui.error( "设置失败" );
+			}
+		},'json');
+    }
+}
+function loan(id){
+	if(!id){
+		return ;
+	}
+	if( confirm( '确定放款吗？' ) ){
+		$.post('__URL__&act=doLoan',{id:id},function( res ){
+			if( res.code == 1 ){
+				ui.success( "操作成功" );
+				$('#opt_'+id).html('已放款');
+				window.location.reload();
+			}else{
+				ui.error( res.msg );
+			}
+		},'json');
+    }
+}
+</script>
+<include file="../Public/footer" />

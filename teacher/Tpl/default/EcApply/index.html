@@ -1,0 +1,78 @@
+<include file="../Teacher/_header" />
+<script type="text/javascript" src="__PUBLIC__/js/check.js"></script>
+<div class="so_main">
+    <include file="_tab" />
+    <div class="Toolbar_inbox">
+    </div>
+    <div class="list">
+        <table id="event_list" width="100%" border="0" cellspacing="0" cellpedit_tabing="0">
+            <tr>
+                <th style="width:30px;">
+                    <input type="checkbox" id="checkbox_handle" onclick="checkAll(this)" value="0">
+                    <label for="checkbox"></label>
+                </th>
+                <th class="line_l">ID</th>
+                <th class="line_l">名称</th>
+                <th class="line_l">操作</th>
+            </tr>
+            <volist name="list" id='vo'>
+                <tr id="{$vo.id}">
+                    <td><input type="checkbox" name="checkbox" id="checkbox2" onclick="checkon(this)" value="{$vo.id}"></td>
+                    <td>{$vo.id}</td>
+                    <td id="title_{$vo.id}">{$vo.title}</td>
+                    <td>
+                <if condition="$vo['isDel'] eq '1'">
+                    <a href="javascript:openProject({$vo['id']})">开启</a>
+                    <else />
+                    <a href="javascript:closeProject({$vo['id']})">关闭</a>
+                </if>
+                </td>
+                </tr>
+            </volist>
+        </table>
+    </div>
+
+    <div class="Toolbar_inbox">
+    </div>
+</div>
+<script>
+    function closeProject(id) {
+        var id = id ? id : getChecked();
+        id = id.toString();
+        if (id == '' || id == 0) {
+            alert('请选择要关闭的项目！');
+            return false;
+        }
+        if (confirm("是否确认关闭该项目？")) {
+            $.post('__URL__&act=closeProject', {id: id}, function (data) {
+                console.log(data);
+                if (data.status == 1) {
+                    ui.success("关闭项目成功");
+                    location.reload();
+                } else {
+                    ui.error("关闭项目失败");
+                }
+            }, 'json');
+        }
+    }
+    function openProject(id) {
+        var id = id ? id : getChecked();
+        id = id.toString();
+        if (id == '' || id == 0) {
+            alert('请选择要开启的项目！');
+            return false;
+        }
+        if (confirm("是否确认开启该项目？")) {
+            $.post('__URL__&act=openProject', {id: id}, function (data) {
+                console.log(data);
+                if (data.status == 1) {
+                    ui.success("开启项目成功");
+                    location.reload();
+                } else {
+                    ui.error("开启项目失败");
+                }
+            }, 'json');
+        }
+    }
+</script>
+<include file="../Teacher/_footer" />

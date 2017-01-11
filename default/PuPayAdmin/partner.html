@@ -1,0 +1,89 @@
+<include file="../Public/header" />
+<div class="so_main">
+        <include file="../Public/tabs" />
+        <include file="twotab" />
+
+
+<div class="Toolbar_inbox">
+    <a href="javascript:addPartner();" class="btn_a">
+        <span class="searchBlog_action">添加</span>
+    </a>
+    <div class="page right"></div>
+</div>
+    <div class="list">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+                <th class="line_l">合作方ID</th>
+                <th class="line_l">名称</th>
+                <th class="line_l">MD5密钥</th>
+                <th class="line_l">创建时间</th>
+                <th class="line_l">状态</th>
+                <th class="line_l">操作</th>
+            </tr>
+            <volist name="list" id="vo">
+                <tr overstyle="on">
+                    <td>{$vo.id}</td>
+                    <td>{$vo.name}</td>
+                    <td>{$vo.md5_key}</td>
+                    <td>{$vo.ctime|date='Y/m/d H:i:s',###}</td>
+                    <td><?php echo $vo['status'] ? '正常' : '禁用'?></td>
+                    <td>
+                        <a href="javascript:editDayRate('{$vo.id}')">日利率</a>
+                        <a href="javascript:editRsaKey('{$vo.id}')">编辑RSA公钥</a>
+                        <if condition="$vo['status']">
+                            <a href="javascript:changePartnerStatus('{$vo.id}', '0')">禁用</a>
+                        <else />
+                            <a href="javascript:changePartnerStatus('{$vo.id}', '1')">开启</a>
+                        </if>
+
+                    </td>
+                </tr>
+            </volist>
+
+        </table>
+    </div>
+</div>
+
+<script>
+$(function() {
+    //鼠标移动表格效果
+    $(document).ready(function(){
+        $("tr[overstyle='on']").hover(
+                function () {
+                    $(this).addClass("bg_hover");
+                },
+                function () {
+                    $(this).removeClass("bg_hover");
+                }
+        );
+    });
+});
+
+function changePartnerStatus(id, status) {
+    if (confirm('确定要执行操作吗？')) {
+        $.post('{:U("pufinance/PuPayAdmin/changePartnerStatus")}', {'id' : id, 'status' : status}, function (result) {
+            if (result.status) {
+                ui.success('操作成功');
+                location.reload();
+            } else {
+                ui.error(result.info);
+            }
+        }, 'json');
+    }
+}
+function addPartner() {
+    var url = "{:U('pufinance/PuPayAdmin/addPartner')}";
+    ui.box.load(url, {'title' : '添加合作方'});
+}
+
+function editRsaKey(id) {
+    var url = "{:U('pufinance/PuPayAdmin/editRsaKey')}&partner_id=" + id;
+    ui.box.load(url, {'title' : '编辑RSA公钥'});
+}
+function editDayRate(id) {
+    var url = "{:U('pufinance/PuPayAdmin/editDayRate')}&partner_id=" + id;
+    ui.box.load(url, {'title' : '天平支付日利率'});
+}
+
+</script>
+<include file="../Public/footer" />

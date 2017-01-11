@@ -1,0 +1,57 @@
+<div class="form2">
+    <dl class="lineD">
+        <dt>提示：</dt>
+        <dd class="cRed">请上传excel表格，格式【UID，{$fields.name.title}，{$fields.desc.title}
+            <volist name="fields" id="vo">
+                <if condition="!in_array($vo['name'], $defFields)">
+                    ，{$vo.title}
+                </if>
+            </volist>
+            】
+            第一行必须是上述格式标题
+        </dd>
+    </dl>
+    <form id="form">
+        <dl class="lineD">
+            <dt>上传附件：</dt>
+            <dd>
+                <input type="file" id="file" name="file"/>
+            </dd>
+        </dl>
+
+        <div class="page_btm">
+            <input type="button" class="btn_b" value="导 入" />
+            <input type="hidden" name="vote_id" value="{$voteId}">
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript" src="__PUBLIC__/js/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jquery-migrate-1.4.1.min.js"></script>
+
+<script>
+    $(function () {
+        $('.btn_b').click(function () {
+            var formData = new FormData(document.getElementById('form'));
+            $.ajax({
+                url: "{:U('Pufinance/PuVoteAdmin/doImportItem')}",
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                dataType: 'json',
+                success: function (result) {
+                    if (result.status) {
+                        ui.box.close();
+                        ui.success(result.info);
+                        setTimeout(function(){location.reload();},1500);
+                    } else {
+//                    ui.box.close();
+                        ui.error(result.info);
+                        return false;
+                    }
+                }
+            });
+        });
+    });
+</script>

@@ -1,0 +1,78 @@
+<div class="form2">
+
+    <dl class="lineD">
+        <dt>支付单号：</dt>
+        <dd>
+            {$payInfo.trade_no}
+        </dd>
+    </dl>
+
+    <dl class="lineD">
+        <dt>支付金额：</dt>
+        <dd>
+            {$payInfo.total_fee}
+        </dd>
+    </dl>
+    <dl class="lineD">
+        <dt>业务名称：</dt>
+        <dd>
+            {$payInfo.subject}
+        </dd>
+    </dl>
+
+    <dl class="lineD">
+        <dt>用户：</dt>
+        <dd>
+            {$payInfo.uid|getUserField=###,realname} / {$payInfo.uid}
+        </dd>
+    </dl>
+
+    <dl class="lineD">
+        <dt>状态：</dt>
+        <dd>
+            <select name="trade_status" id="trade_status">
+                <option value="0">待支付</option>
+                <option value="1">支付成功</option>
+                <option value="2">未支付且关闭</option>
+            </select>
+        </dd>
+    </dl>
+
+    <dl class="lineD">
+        <dt>支付方式：</dt>
+        <dd>
+            <select name="pay_method" id="pay_method">
+                <?php foreach(pay_method() as $k => $m):?>
+                    <option value="{$k}">{$m}</option>
+                <?php endforeach;?>
+            </select>
+            <span style="color: #F00">注意：仅状态是成功时有效</span>
+        </dd>
+    </dl>
+
+    <div class="page_btm">
+        <input type="button" class="btn_b" value="提 交" />
+    </div>
+</div>
+<script>
+    $(function () {
+        $('.btn_b').click(function () {
+
+            $.post("{:U('pufinance/PuPayAdmin/saveChangeStatus')}", {
+                'trade_no' : '{$payInfo.trade_no}',
+                'pay_method' : $('#pay_method').val(),
+                'trade_status' : $('#trade_status').val()
+            }, function(result) {
+                if (result.status) {
+                    ui.box.close();
+                    ui.success(result.info);
+                    setTimeout(function(){location.reload();},1500);
+                } else {
+//                    ui.box.close();
+                    ui.error(result.info);
+                    return false;
+                }
+            }, 'json');
+        });
+    });
+</script>

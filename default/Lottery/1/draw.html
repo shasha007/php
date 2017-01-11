@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <link href="../Public/css/bootstrap.min.css" rel="stylesheet">
+    <link href="__PUBLIC__/lottery/css/reset.css" rel="stylesheet">
+    <link href="__PUBLIC__/lottery/css/style.css" rel="stylesheet">
+    <title>众灵狂欢日</title>
+</head>
+<body class="L-spirit-draw" style="height:100%;">
+<img class="L-spirit-draw-title" src="__PUBLIC__/lottery/img/drawTitle.png" />
+<article class="L-spirit-draw-imgs">
+    <ul>
+        <li onclick="openCard(this)">
+            <img src="__PUBLIC__/lottery/img/card00.png" />
+        </li>
+        <li onclick="openCard(this)">
+            <img src="__PUBLIC__/lottery/img/card00.png" />
+        </li>
+        <li onclick="openCard(this)">
+            <img src="__PUBLIC__/lottery/img/card00.png" />
+        </li>
+        <li onclick="openCard(this)">
+            <img src="__PUBLIC__/lottery/img/card00.png" />
+        </li>
+        <li onclick="openCard(this)">
+            <img src="__PUBLIC__/lottery/img/card00.png" />
+        </li>
+        <li onclick="openCard(this)">
+            <img src="__PUBLIC__/lottery/img/card00.png" />
+        </li>
+        <li onclick="openCard(this)">
+            <img src="__PUBLIC__/lottery/img/card00.png" />
+        </li>
+        <li onclick="openCard(this)">
+            <img src="__PUBLIC__/lottery/img/card00.png" />
+        </li>
+        <li onclick="openCard(this)">
+            <img src="__PUBLIC__/lottery/img/card00.png" />
+        </li>
+    </ul>
+
+    <a class="L-spirit-index-div" href="{:U('Pufinance/Lottery/myPrize')}&lottery_id=1">
+        <img class="my-prize-btn" src="__PUBLIC__/lottery/img/drawButton.png">
+    </a>
+    <img src="__PUBLIC__/lottery/img/drawcon.png"  class="L-spirit-draw-line"/>
+    <div class="L-spirit-draw-con">
+        <p>友情提醒：</p>
+        <p>活动中如有问题，请咨询客服QQ：4008788593</p>
+    </div>
+
+</article>
+
+<!--恭喜你解封了-->
+<div class="transparent" id="drawres">
+    <article  class="L-spirit-prize-article">
+        <p class="L-spirit-name"><span></span>式神</p>
+        <img class="L-spirit-prize" src="" />
+        <p class="L-prize-name"></p>
+        <p class="L-spirit-con">友情提示：奖品以实物为准</p>
+        <a href="{:U('Pufinance/Lottery/draw')}&lottery_id=1"><img class="goOn-btn" src="__PUBLIC__/lottery/img/goOn.png"></a>
+        <a class="L-spirit-prize-a" href="{:U('Pufinance/Lottery/address')}&lottery_id=1">
+            <img class="goods-detail-btn" src="__PUBLIC__/lottery/img/detaile.png">
+        </a>
+        <i></i>
+    </article>
+</div>
+<!--符咒数量为0-->
+<div class="transparent" id="notimes">
+    <article  class="L-spirit-prize-num0">
+        <img class="L-spirit-num" src="__PUBLIC__/lottery/img/chance.png" />
+        <a class="L-spirit-prize-a" href="javascript:void(0);">
+            <img class="get-chance-btn" src="__PUBLIC__/lottery/img/getChance.png">
+        </a>
+        <p class="L-spirit-con2">友情提示：充值的PU币可免费提现。</p>
+
+        <i></i>
+    </article>
+</div>
+<!--点击【去获取符咒】今日PU币用完-->
+<div class="transparent" id="notimesres">
+    <article  class="L-spirit-prize-buyPU0">
+        <img class="L-spirit-buy" src="__PUBLIC__/lottery/img/buyPuChance.png" />
+        <i></i>
+    </article>
+</div>
+
+<!--弹框信息-->
+<div class="transparent" id="msg">
+    <article  class="L-spirit-prize-buyPU0">
+        <div class="L-alurt-erro">错误信息</div>
+        <i></i>
+    </article>
+</div>
+
+</body>
+<script src="__PUBLIC__/js/jquery-2.1.1.min.js"></script>
+<script src="../Public/js/bootstrap.min.js"></script>
+<script src="__PUBLIC__/lottery/js/spirit.js"></script>
+</html>
+<script>
+    function openCard(obj)
+    {
+        loading.show();
+        $.post("{:U('Pufinance/Lottery/doDraw')}&lottery_id=1", {
+            'random' : '{$random}'
+        }, function (result) {
+            $('.transparent').hide();
+            if (result.status) {
+                var prize = result.data.prize;
+                $(obj).children().attr('src', prize.icon);
+                $('#drawres .L-spirit-name > span').html(prize.desc);
+                $('#drawres .L-prize-name').html(prize.name);
+                $('#drawres .L-spirit-prize').attr('src', prize.pic);
+//                $('.h-loading').hide();
+                setTimeout(function () {
+                    loading.hide();
+                    $('.h-loading').show();
+                    $('#drawres').show();
+                }, 1500);
+            } else {
+                loading.hide();
+                switch (result.info) {
+                    case 'nouser':
+                        $('#notimes').show();
+                        $('#notimes .L-spirit-prize-a').click(function () {
+                            window.location.href = "{:U('Pufinance/Lottery/recharge')}&lottery_id=1";
+                        });
+                        break;
+                    case 'notimes':
+                        $('#notimes').show();
+                        $('#notimes .L-spirit-prize-a').click(function () {
+                            loading.show();
+                            $.post("{:U('Pufinance/Lottery/pay')}&lottery_id=1", {'type' : 1}, function (result) {
+                                if (result.status) {
+                                    window.location.href = result.data.url;
+                                } else if (result.info == 'notimes') {
+                                    $('#notimesres').show();
+                                } else if (result.info == 'nouser') {
+                                    $('#msg').show();
+                                    $('.L-alurt-erro').html(result.info);
+                                }
+                                loading.hide();
+                            }, 'json');
+                        });
+                        break;
+                    default:
+                        $('#msg').show();
+                        $('.L-alurt-erro').html(result.info);
+                }
+                return false;
+            }
+        }, 'json');
+//        $(obj).children().attr('src','img/card01.png')
+
+//        setTimeout(prizeShow(), 200);
+
+    }
+    /*var mask=document.getElementById("masking");
+    mask.addEventListener("click",slideUp);
+    function prizeShow(){
+        mask.style.display="block";
+    }
+    function slideUp(e){
+        if(e.target.getAttribute("id")==="masking"){
+            mask.style.display="none";
+        }
+    }*/
+    $('#drawres i').click(function () {
+        $(".transparent").hide();
+        window.location.href = "{:U('Pufinance/Lottery/draw')}&lottery_id=1";
+    })
+    $(".transparent i").click(function() {
+        $(".transparent").hide();
+    });
+
+</script>

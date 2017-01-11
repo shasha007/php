@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <link href="../Public/css/bootstrap.min.css" rel="stylesheet">
+    <link href="__PUBLIC__/lottery/css/reset.css" rel="stylesheet">
+    <link href="__PUBLIC__/lottery/css/style.css" rel="stylesheet">
+    <title>众灵狂欢日</title>
+</head>
+<body class="L-spirit-rule" style="height:100%;">
+
+<img class="L-spirit-rechage-title" src="__PUBLIC__/lottery/img/rechage.png" />
+
+<div class="L-PUB-pay">
+    <ul>
+        <li data-type="2">
+            9.9元
+        </li>
+        <li data-type="4">
+            19.8元
+        </li>
+
+    </ul>
+</div>
+
+<a class="L-spirit-draw-a" href="javascript:void(0);">
+    <img class="rechage-btn" src="__PUBLIC__/lottery/img/recha.png">
+</a>
+<div class="L-rechage-con">
+    提示：充值9.9可免费获得2张符咒，充值19.8元可免费获得4张符咒。此次活动中充值的PU币可以通过PU币提现方式进行<a href="javascript:void(0);">全部返还</a>
+</div>
+
+</body>
+</html>
+<script src="__PUBLIC__/js/jquery-2.1.1.min.js"></script>
+<script src="../Public/js/bootstrap.min.js"></script>
+<script src="__PUBLIC__/lottery/js/spirit.js"></script>
+<script>
+    $( function(){
+        $(".L-PUB-pay li").click(function(){
+            $(".L-PUB-focas").removeClass("L-PUB-focas");
+            $(this).addClass("L-PUB-focas");
+        });
+
+        $('.L-spirit-draw-a').click(function () {
+            var type = $(".L-PUB-focas").data('type');
+            if (isNaN(type)) {
+                alert('请选择充值金额');
+                return false;
+            }
+            loading.show();
+            $.post("{:U('Pufinance/Lottery/pay')}&lottery_id=1", {'type' : type}, function (result) {
+                if (result.status) {
+                    window.location.href = result.data.url;
+                } else {
+                    alert(result.info);
+                    return false;
+                }
+                loading.hide();
+            }, 'json');
+        });
+    });
+</script>

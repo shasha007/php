@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>登录</title>
+    <link href="../Public/css/reset.css" rel="stylesheet">
+    <link href="../Public/css/style.css" rel="stylesheet">
+    <script>
+        // 去掉锚点
+        window.location.hash = "";
+    </script>
+</head>
+<body style="background-color: #fff;">
+
+<div id="h_LogInBg" class="h_SelectSchool">
+    <ul>
+        <?php foreach ($schools as $flag => $school):?>
+            <p class="h_LogFlag" id="flag{$flag}">{$flag}</p>
+            <volist name="school" id="vo">
+                <if condition="count($school) eq $key+1">
+                    <li data-sid="{$vo.id}" class="h_LogLastFlag">{$vo.title}</li>
+                <else />
+                    <li data-sid="{$vo.id}">{$vo.title}</li>
+                </if>
+
+            </volist>
+        <?php endforeach;?>
+
+    </ul>
+    <ul id="h_LogAnchor">
+        <volist name="flags" id="flag">
+            <a href="#flag{$flag}">{$flag}</a>
+        </volist>
+    </ul>
+</div>
+<div id="h_LogAllPage" style="display: none">
+    <div class="section" id="section0">
+        <div class="h_LogInCon">
+            <div class="h_logInHeader">
+                <img class="h_LogInImg" src="../Public/img/LogHeadImg.png">
+                <p></p>
+            </div>
+            <div class="h_LogIn">
+                <input class="h_LogInput" id="h_LogSchool" type="text" readonly  placeholder="请选择你的学校">
+                <input type="hidden" id="sid" name="sid" value="0">
+                <input class="h_LogInput" id="h_LogName" name="number" type="text" placeholder="请输入学号">
+                <input class="h_LogInput" id="h_LogPsw" name="password" type="password" placeholder="请输入密码">
+                <button class="h_LogInBtn">登录</button>
+            </div>
+        </div>
+    </div>
+    <div class="section h_LogSection1" id="section1">
+        <div class="h_LogInCon">
+            <img class="h_LogInCode" src="../Public/img/Login_code.jpg">
+            <button class="h_InstallBtn">下载安装包</button>
+            <footer class="h_LogInFoot">
+                客服QQ:&emsp13;&emsp13;400-878-8593 &emsp13;客服电话:&emsp13;&emsp13;400-878-8593
+            </footer>
+        </div>
+    </div>
+</div>
+<div id="loading" style="display: none">
+    <div class="h-background"></div>
+    <div class="h-loading">
+        <div class="h-animate"></div>
+    </div>
+</div>
+<script type="text/javascript" src="__PUBLIC__/js/jquery-2.1.1.min.js"></script>
+<script src="../Public/js/LogIn.js"></script>
+<script type="text/javascript">
+    var client = '{$client}',
+            refer = "{$_GET['refer']}";
+    if (client == 'app') {
+        $('#loading').show();
+        var mid,token;
+        mid = Android.getUid();
+        token = Android.getToken();
+        location.href = '{:U("Pufinance/Public/rediLogin")}&refer=' + encodeURIComponent(refer) + "&mid=" + mid + '&token=' + encodeURIComponent(token);
+    } else {
+        $('#h_LogAllPage').show();
+
+        $(function () {
+            $('.h_LogInBtn').click(function () {
+                var sid = $('#sid').val(),
+                        number = $('#h_LogName').val(),
+                        password = $('#h_LogPsw').val();
+                if (sid == 0) {
+                    alert('请选择学校');
+                    return false;
+                }
+                if (number == '') {
+                    alert('请输入学号');
+                    return false;
+                }
+                if (password == '') {
+                    alert('请输入密码');
+                    return false;
+                }
+                $('#loading').show();
+                $.post('{:U("pufinance/Public/doLogin")}', {'sid' : sid, 'number' : number, 'password' : password}, function (result) {
+                    if (result.status) {
+                        if (refer == '') {
+                            location.replace('{:U("pufinance/Index/index")}');
+                        } else {
+                            location.replace(refer);
+
+                        }
+                    } else {
+                        alert(result.info);
+                        $('#loading').hide();
+                        return false;
+                    }
+                }, 'json');
+            });
+        });
+    }
+
+</script>
+</body>
+</html>

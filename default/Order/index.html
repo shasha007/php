@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>我的订单</title>
+    <link href="../Public/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../Public/css/style.css?v=001" rel="stylesheet">
+    <link href="../Public/css/reset.css?v=001" rel="stylesheet">
+
+</head>
+<body>
+<article class="h-Liu">
+    <a href="{:U('pufinance/Order/pucredit')}">
+        <section>
+            <div><img src="../Public/img/liuTP.png"></div>
+            <div>天平</div>
+            <div><img src="../Public/img/liuZuo.png"></div>
+        </section>
+    </a>
+    <a href="{:U('pufinance/traffic/orderLists')}">
+        <section>
+            <div><img src="../Public/img/liuLL.png"></div>
+            <div>流量</div>
+            <div><img src="../Public/img/liuZuo.png"></div>
+        </section>
+    </a>
+    <eq name="has_old" value="1">
+        <a href="{:U('pufinance/Order/old_order')}">
+            <section>
+                <div><img src="../Public/img/liuKDJ.png"></div>
+                <div>口袋金</div>
+                <div><img src="../Public/img/liuZuo.png"></div>
+            </section>
+        </a>
+    </eq>
+    <neq name="client" value="app">
+        <!--基金-->
+        <a href="{:U('pufinance/Order/fund')}">
+            <section>
+                <div><img src="../Public/img/jijin.png"></div>
+                <div>基金</div>
+                <div><img src="../Public/img/liuZuo.png"></div>
+            </section>
+        </a>
+    </neq>
+    <a href="{:U('pufinance/Order/withdraw')}">
+        <section>
+            <div><img src="../Public/img/withdraw.png"></div>
+            <div>提现</div>
+            <div><img src="../Public/img/liuZuo.png"></div>
+        </section>
+    </a>
+</article>
+<neq name="client" value="app">
+    <include file="../Public/footer_nav" />
+</neq>
+<script type="text/javascript" src="../Public/js/mainScript.js" ></script>
+<script type="text/javascript">
+    setActionBar('我的订单', '', '');
+</script>
+
+</body>
+</html>

@@ -1,0 +1,29 @@
+<div class="tit_tab">
+    <ul>
+        <li><a href="{:U('pufinance/PufinanceOrder/orderList')}"<?php if(!isset($status) && MODULE_NAME=='PufinanceOrder' && ACTION_NAME=='orderList'):?>
+            class="on"
+            <?php endif;?>
+            >全部</a>
+        </li>
+        <li><a href="{:U('pufinance/PufinanceOrder/orderList',array('status'=>0))}"<?php if(isset($status) && $status==0):?>
+			class="on"
+			<?php endif;?>
+		    >待风控审核</a>
+        </li>
+        <li><a href="{:U('pufinance/PufinanceOrder/orderList',array('status'=>2))}" <?php if($status==2):?>
+            class="on"
+            <?php endif;?>
+            >已风控通过</a>
+        </li>
+		<li><a href="{:U('pufinance/PuRepayment/index')}" <?php if(MODULE_NAME == 'PuRepayment'):?>
+            class="on"
+            <?php endif;?>
+            >还款列表</a>
+        </li>
+        <!--<li><a href="{:U('pufinance/PufinanceOrder/yfbBatch')}" <?php if(ACTION_NAME == 'yfbBatch'):?>
+            class="on"
+            <?php endif;?>
+            >易付宝批量付款</a>
+        </li>-->
+    </ul>
+</div>

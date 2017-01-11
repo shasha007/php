@@ -1,0 +1,82 @@
+<div class="page_tit">全局配置</div>
+<div class="tit_tab">
+    <ul>
+        <li><a 
+                <eq name="ACTION_NAME" value="webconfig">class="on"</eq>
+                href="{:U('event/Config/webconfig')}"
+                >
+                站点配置
+            </a>
+        </li>
+        <li><a 
+                <eq name="ACTION_NAME" value="orga">class="on"</eq>
+                href="{:U('event/Config/orga')}"
+                >
+                校级组织
+            </a>
+        </li>
+        <li><a 
+                <eq name="ACTION_NAME" value="printconfig">class="on"</eq>
+                href="{:U('event/Config/printconfig')}"
+                >
+                打印证书配置
+            </a>
+        </li>
+        <li><a 
+                <eq name="ACTION_NAME" value="cx">class="on"</eq>
+                href="{:U('event/Config/cx')}"
+                >
+                诚信系统配置
+            </a>
+        </li>
+        <li>
+            <a 
+                <?php if(!empty($menu1)): ?> 
+                <eq name="menu1" value="2">class="on"</eq>
+                <?php endif;?> 
+                href="{:U('event/Config/typeList')}"
+                >
+                活动分类自定义
+            </a
+            >
+        </li>
+        <li><a 
+                <?php if(!empty($menu1)): ?>
+                <eq name="menu1" value="4">class="on"</eq>
+                <?php endif;?>
+                href="{:U('event/Config/tag')}"
+                >
+                活动标签自定义
+            </a>
+        </li>
+        <?php if(isEcApplyV2($school['id'])):?>
+        <li>
+            <a 
+                <?php if(!empty($menu1)): ?>
+                <eq name="menu1" value="3">class="on"</eq>
+                <?php endif;?>
+                href="{:U('event/Config/ecCat')}"
+                >
+                学分申请自定义
+            </a>
+        </li>
+        <?php endif;?>
+        <?php if($school['id'] == 480):?>
+        <li>
+            <a 
+                <eq name="ACTION_NAME" value="index">class="on"</eq>
+                href="{:U('teacher/EcApply/index')}"
+                >
+                学分申请开关
+            </a>
+        </li>
+        <?php endif;?>
+        <li><a 
+                <eq name="ACTION_NAME" value="daySignConfig">class="on"</eq>
+                href="{:U('event/Config/daySignConfig')}"
+                >
+                每日签到配置
+            </a>
+        </li>
+    </ul>
+</div>

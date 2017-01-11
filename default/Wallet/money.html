@@ -1,0 +1,53 @@
+<include file="../Public/header" />
+<div class="so_main">
+    <if condition="$mid != 179238">
+        <include file="../Public/tabs" />
+        <include file="walletTab" />
+        <hr>
+    </if>
+
+    <div class="tit_tab">
+        <ul>
+            <li><a href="{:U('pufinance/Wallet/money')}" <eq name="ACTION_NAME" value="money">class="on"</eq>>PU币余额</a></li>
+            <li><a href="{:U('pufinance/Wallet/moneyin')}" <eq name="ACTION_NAME" value="moneyin">class="on"</eq>>充值记录</a></li>
+            <li><a href="{:U('pufinance/Wallet/moneyout')}" <eq name="ACTION_NAME" value="moneyout">class="on"</eq>>消费记录</a></li>
+        </ul>
+    </div>
+    <div class="Toolbar_inbox">
+        <form method="post">
+            用户UID：<input type="number" min="1" value="{$Think.post.uid}" name="uid" />&nbsp;&nbsp;
+            姓名：<input name="realname" type="text" value="{$Think.post.realname}">&nbsp;&nbsp;
+
+            &nbsp;&nbsp;<input type="submit" class="btn_b" value="搜索" />
+        </form>
+		<span>共{$totalRows}条记录</span>
+        <div class="page right">{$html}</div>
+    </div>
+
+    <div class="list">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+                <th class="line_l">用户ID</th>
+                <th class="line_l">姓名</th>
+                <th class="line_l">学校</th>
+                <th class="line_l">余额 / 自有 + 借贷</th>
+                <th class="line_l">明细</th>
+            </tr>
+            <volist id="vo" name="data">
+                <tr overstyle='on'>
+                    <td>{$vo.uid}</td>
+                    <td>{$vo.realname}</td>
+                    <td>{$vo.sid|tsGetSchoolName}</td>
+                    <td><?php echo money2xs($vo['money']+$vo['pmoney'])?> / {$vo.money|money2xs} + {$vo.pmoney|money2xs}</td>
+                    <td><a href="{:U('pufinance/Wallet/moneyin', array('uid'=>$vo['uid']))}">充值明细</a>
+                        <a href="{:U('pufinance/Wallet/moneyout', array('uid'=>$vo['uid']))}">消费明细</a></td>
+                </tr>
+            </volist>
+        </table>
+    </div>
+    <div class="Toolbar_inbox">
+        <span>共{$totalRows}条记录</span>
+        <div class="page right">{$html}</div>
+    </div>
+</div>
+<include file="../Public/footer" />

@@ -1,0 +1,130 @@
+<!--
+Created by huqiwen on 16/9/6.
+describe :
+-->
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta content="telephone=no" name="format-detection">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <link href="../Public/css/reset.css" rel="stylesheet">
+    <link href="../Public/css/style.css" rel="stylesheet">
+    <title>完善个人资料</title>
+</head>
+<body>
+<header class="init_header">
+    <div>
+        <img class="init_Img" src="{$face}">
+        <p>上传头像<span class="arrow"></span>
+        </p>
+        <input class="file_input" type="file" />
+    </div>
+</header>
+<form action="{:U('Pufinance/Public/doUserInfo')}" method="post">
+    <input type="hidden" name="face_tag" id="face_tag" value="{$face_tag}">
+    <ul class="init_ul">
+        <li>
+            <p>新密码</p>
+            <p><input type="password" name="password" placeholder="不可跟原始密码一致"></p>
+        </li>
+        <li>
+            <p>确认新密码</p>
+            <p><input type="password" name="repassword"></p>
+        </li>
+        <li class="init_margin">
+            <p>常用邮箱</p>
+            <p><input type="email" name="email2"></p>
+        </li>
+        <li class="init_margin">
+            <p>手机号码</p>
+            <p><input type="tel" name="mobile" id="mobile"></p>
+        </li>
+        <li class="init_checkCode">
+            <p>验证码</p>
+            <p><input type="text" name="code" id="code"></p>
+            <p><span class="init_check">发送验证码</span></p>
+        </li>
+    </ul>
+    <footer class="init_btn">
+        <button type="button" id="submit">确认初始化</button>
+    </footer>
+</form>
+<div id="loading" style="display: none;">
+    <div class="h-background"></div>
+    <div class="h-loading">
+        <div class="h-animate"></div>
+    </div>
+</div>
+</body>
+<script src="__PUBLIC__/js/jquery-2.1.1.min.js"></script>
+<script src="../Public/js/exif.js"></script>
+<script src="../Public/js/upload.js"></script>
+<script>
+    $(function () {
+        var height = $(".init_header >div").height();
+        $(".file_input").css({"height":height+"px"});
+    });
+
+    var UPLOAD_URL = '{:U("Pufinance/Public/saveAvator")}';
+    var timer,time;
+    getcode = function () {
+        time = 60;
+        var mobile = $('#mobile').val();
+        if (!(/^1[3|4|5|7|8][0-9]\d{4,8}$/.test(mobile))) {
+            alert('输入11位手机号码，注意多余空格');
+            $('#mobile').focus();
+            return false;
+        }
+
+        $(this).css("background","#ccc");
+        $(".init_check").unbind("click");
+        $(".init_check").html("发送中 ...");
+        $.post("{:U('Home/Public/mobileCode')}", {'mobile' : mobile}, function (result) {
+            if (result.status) {
+                timer = setInterval("down()", 1000);
+            } else {
+                alert(result.info);
+                $(".init_check").click(getcode);
+                $(".init_check").css("background","#ea5504");
+                $(".init_check").html("发送验证码");
+            }
+        }, 'json');
+    }
+    $(".init_check").click(getcode);
+    function down(){
+        time--;
+        if(time>=0) {
+            $(".init_check").html(time + " 秒后可重发短信");
+        }else{
+            clearInterval(timer);
+            $(".init_check").click(getcode);
+            $(".init_check").css("background","#ea5504");
+            $(".init_check").html("发送验证码");
+        }
+    }
+
+    $(function () {
+        $('#submit').click(function () {
+            var _this = this;
+            $(this).prop('disabled', true);
+            $(this).css("background","#ccc");
+            var _form = $(this).parents('form');
+            $.post($(_form).attr('action'), _form.serialize(), function (result) {
+                if (result.status) {
+                    location.href = "{:U('Pufinance/Index/index')}";
+                } else {
+                    alert(result.info);
+                    $(_this).prop('disabled', false);
+                    $(_this).css("background","#ea5504");
+                    return false;
+                }
+            }, 'json');
+        });
+    });
+</script>
+</html>

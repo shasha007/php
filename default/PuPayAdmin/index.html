@@ -1,0 +1,152 @@
+<include file="../Public/header" />
+<script type="text/javascript" src="../Public/js/laydate/laydate.js"></script>
+<div class="so_main">
+        <include file="../Public/tabs" />
+        <include file="twotab" />
+        <div id="searchBlog_div" <neq name="isSearch" value="1">style="display:none;"</neq>>
+        <div class="page_tit">搜索 [ <a href="javascript:void(0);" onclick="searchBlog();">隐藏</a> ]</div>
+        <div class="form2">
+            <form id="search-form" action="__URL__&act=index">
+                <input type="hidden" name="app" value="pufinance"/>
+                <input type="hidden" name="mod" value="PuPayAdmin"/>
+                <input type="hidden" name="act" value="index"/>
+                <dl class="lineD">
+                    <dt>创建时间起止：</dt>
+                    <dd>
+                        <input name="sctime" type="text" value="{$Think.get.sctime}" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" /> -
+                        <input name="ectime" type="text" value="{$Think.get.ectime}" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" />   <span style="color:red;"></span>
+                    </dd>
+                </dl>
+                <dl class="lineD">
+                    <dt>支付订单号：</dt>
+                    <dd>
+                        <input name="trade_no" type="text" value="{$Think.get.trade_no}">
+                    </dd>
+                </dl>
+                <dl class="lineD">
+                    <dt>用户uid：</dt>
+                    <dd>
+                        <input name="uid" type="text" value="{$Think.get.uid}">
+                    </dd>
+                </dl>
+                <dl class="lineD">
+                    <dt>合作方ID：</dt>
+                    <dd>
+                        <input name="partner_id" type="text" value="{$Think.get.partner_id}" />
+                    </dd>
+                </dl>
+                <dl class="lineD">
+                    <dt>业务订单号：</dt>
+                    <dd>
+                        <input name="out_trade_no" type="text" value="{$Think.get.out_trade_no}" />
+                    </dd>
+                </dl>
+				<dl class="lineD">
+                    <dt>业务名称：</dt>
+                    <dd>
+                        <input name="subject" type="text" value="{$Think.get.subject}" />
+                    </dd>
+                </dl>
+                <dl class="lineD">
+                    <dt>支付方式：</dt>
+                    <dd>
+                        <select name="type">
+                            <option value="0">--选择支付方式--</option>
+                            <?php foreach(pay_method() as $key=>$val):?>
+							<option value="<?php echo $key;?>" <?php if($key == $_GET['type']):?>selected<?php endif;?>><?php echo $val;?></option>
+							<?php endforeach;?>
+                        </select>
+                    </dd>
+                </dl>
+               <dl class="lineD">
+                    <dt>支付状态：</dt>
+                    <dd>
+                        <select name="status">
+                            <option value="0">--选择支付状态--</option>
+							<?php foreach(pay_status() as $k=>$val):?>
+							<option value="<?php echo $k+1;?>" <?php if(($k+1) == $_GET['status']):?>selected<?php endif;?>><?php echo $val;?></option>
+							<?php endforeach;?>
+                        </select>
+                    </dd>
+                </dl>
+                <div class="page_btm">
+                    <input type="submit" class="btn_b" value="确定" />
+                </div>
+            </form>
+        </div>
+</div>
+
+
+<div class="Toolbar_inbox">
+    <a href="javascript:void(0);" class="btn_a" onclick="searchBlog();">
+        <span class="searchBlog_action"><neq name="isSearch" value="1">搜索<else/>搜索完毕</neq></span>
+    </a>
+    <div class="page right">{$html}</div>
+</div>
+    <div class="list">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+                <th class="line_l">支付订单号</th>
+                <th class="line_l">支付金额</th>
+                <th class="line_l">用户名 / UID</th>
+                <th class="line_l">业务订单号</th>
+                <th class="line_l">合作方</th>
+                <th class="line_l">业务名称</th>
+                <th class="line_l">支付方式</th>
+                <th class="line_l">支付状态</th>
+                <th class="line_l">创建时间</th>
+                <th class="line_l">操作</th>
+            </tr>
+            <?php foreach($data as $item):?>
+                <tr overstyle='on'>
+                    <td><?php echo $item['trade_no'];?></td>
+                    <td>￥<?php echo $item['total_fee'];?></td>
+                    <td><a href="<?php echo U('pufinance/Admin/userDetail',array('uid'=>$item['uid']));?>"><?php echo get_user_info($item['uid'],'realname');?></a> / {$item.uid}</td>
+                    <td><?php echo $item['out_trade_no'];?></td>
+                    <td><?php echo $item['partner_name'];?><br><?php echo $item['partner_id'];?></td>
+                    <td><?php echo $item['subject'];?></td>
+                    <td><?php echo pay_method($item['pay_method']);?></td>
+                    <td><?php echo pay_status($item['trade_status']);?></td>
+                    <td><?php if($item['ctime']):?><?php echo date('Y/m/d H:i:s',$item['ctime']);?><?php endif;?></td>
+                    <td>
+                    <if condition="$item['total_refund_fee'] gt 0">
+                        <a href="javascript:showRefund('{$item.trade_no}')">有退款({$item.total_refund_fee})</a>
+                    </if>
+
+                    <if condition="$mid == '2775311'">
+                        <a href="javascript:changeStatus('{$item.trade_no}')">修改状态</a>
+                    </if>
+                    </td>
+                </tr>
+            <?php endforeach;?>
+        </table>
+    </div>
+</div>
+
+<script>
+
+var isSearchHidden = <neq name="isSearch" value="1">1<else/>0</neq>;
+function searchBlog() {
+    if(isSearchHidden == 1) {
+        $("#searchBlog_div").slideDown("fast");
+        $(".searchBlog_action").html("搜索完毕");
+        isSearchHidden = 0;
+    }else {
+        $("#searchBlog_div").slideUp("fast");
+        $(".searchBlog_action").html("搜索");
+        isSearchHidden = 1;
+    }
+}
+
+function showRefund(tradeNo) {
+    var url = "{:U('pufinance/PuPayAdmin/showRefund')}&trade_no="+tradeNo;
+    ui.box.load(url,{title:'查看分期'});
+}
+
+function changeStatus(tradeNo) {
+    var url = "{:U('pufinance/PuPayAdmin/changeStatus')}&trade_no="+tradeNo;
+    ui.box.load(url,{title:'修改状态'});
+}
+
+</script>
+<include file="../Public/footer" />

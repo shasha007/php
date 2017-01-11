@@ -1,0 +1,24 @@
+<div class="tit_tab">
+    <ul>
+        <li>
+            <a href="{:U('pufinance/SchoolVoteAdmin/photo')}"
+            <?php if(ACTION_NAME=="photo"):?>
+            class="on"
+            <?php endif;?>
+            >投票选项</a>
+        </li>
+        <li>
+            <a href="{:U('pufinance/SchoolVoteAdmin/record')}"
+            <?php if(ACTION_NAME == 'record'):?>
+            class="on"
+            <?php endif;?>
+            >投票记录</a>
+        </li>
+
+    </ul>
+    <if condition="ACTION_NAME == 'photo'">
+        <div style="float: right;line-height: 26px;">
+            <div class="page right">{$html}</div>
+        </div>
+    </if>
+</div>

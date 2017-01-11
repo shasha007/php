@@ -1,0 +1,45 @@
+<!--
+Created by huqiwen on 16/5/19.
+describe :
+-->
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <link href="../Public/css/style.css?v=001" rel="stylesheet">
+    <link href="../Public/css/reset.css?v=001" rel="stylesheet">
+    <title>口袋金</title>
+</head>
+<body>
+<header class="h-trafficH">
+    <div>应还时间</div>
+    <div>订单金额</div>
+    <div>期数/总期数</div>
+    <div>本期应还</div>
+    <div>状态</div>
+</header>
+<ul class="h-trafficU">
+    <volist name="list" id="vo">
+        <li>
+            <div>{$vo.stime}</div>
+            <div>{$vo.all_money}</div>
+            <div>{$vo.per_no}/{$vo.staging}</div>
+            <div>{$vo.surp_money}元</div>
+            <div>
+                <switch  name="vo.status">
+                    <case value="0">未还款</case>
+                    <case value="2">已还款</case>
+                    <case value="3">还款失败</case>
+                    <case value="4">余额不足</case>
+                    <default /> 未还款
+                </switch>
+
+            </div>
+        </li>
+    </volist>
+</ul>
+</body>
+</html>

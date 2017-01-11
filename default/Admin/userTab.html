@@ -1,0 +1,8 @@
+<div class="Toolbar_inbox">
+	<a href="<?php echo U('pufinance/Admin/index');?>" class="btn_a"><span <?php if(in_array(ACTION_NAME, array('index','userDetail'))):?>class="cRed"<?php endif;?>>用户资料</span></a>
+	<a href="<?php echo U('pufinance/Admin/sysmessage');?>" class="btn_a"><span <?php if(ACTION_NAME == 'sysmessage'):?>class="cRed"<?php endif;?>>系统消息</span></a>
+	<if condition="in_array($mid, array('2775311', '2783858'))">
+		<a href="<?php echo U('pufinance/Admin/dayrate');?>" class="btn_a"><span <?php if(ACTION_NAME == 'dayrate'):?>class="cRed"<?php endif;?>>借款日利率</span></a>
+
+	</if>
+</div>

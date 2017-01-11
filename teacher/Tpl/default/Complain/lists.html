@@ -1,0 +1,71 @@
+<include file="../Teacher/_header" />
+<script type="text/javascript" src="__PUBLIC__/js/check.js"></script>
+<div class="so_main">
+    <include file="_tab" />
+    <div class="Toolbar_inbox">
+        <span>共{$totalRows}条记录</span>
+        <div class="page right">{$html}</div>
+    </div>
+    <div class="list">
+        <table id="event_list" width="100%" border="0" cellspacing="0" cellpedit_tabing="0">
+            <tr>
+                <th style="width:30px;">
+                    <input type="checkbox" id="checkbox_handle" onclick="checkAll(this)" value="0">
+                    <label for="checkbox"></label>
+                </th>
+                <th class="line_l">ID</th>
+                <th class="line_l">申诉人</th>
+                <th class="line_l">申诉编号</th>
+                <th class="line_l">申诉类型</th>
+                <th class="line_l">申诉项目</th>
+                <th class="line_l">申诉主因</th>
+                <th class="line_l">申诉描述</th>
+                <th class="line_l">操作</th>
+            </tr>
+            <volist name="data" id='vo'>
+                <tr id="{$vo.id}">
+                    <td><input type="checkbox" name="checkbox" id="checkbox2" onclick="checkon(this)" value="{$vo.id}"></td>
+                    <td>{$vo.id}</td>
+                    <td>{$vo.user_real_name}</td>
+                    <td>{$vo.rand_number}</td>
+                    <td>{$vo.project_type_name}</td>
+                    <td>{$vo.complain_project_name}</td>
+                    <td>{$vo.system_reason_desc}</td>
+                    <td>{$vo.self_reason_content}</td>
+                    <td>
+                        <a href="javascript:audit('{$vo.id}');">查看详细</a><br/>
+                        <a href="javascript:pass('{$vo.id}');">回复处理</a><br/>
+                        <a href="javascript:reject('{$vo.id}');">拒绝处理</a><br/>
+                    </td>
+                </tr>
+            </volist>
+        </table>
+    </div>
+
+    <div class="Toolbar_inbox">
+    </div>
+</div>
+<script>
+    function audit(id) {
+        if (id == '' || id == 0) {
+            ui.error("请选择一个项目");
+            return false;
+        }
+        ui.box.load("__URL__&act=detail" + '&id=' + id, {title: '申诉详细'});
+    }
+    function pass(id) {
+        if (id == '' || id == 0) {
+            ui.error("请选择一个项目");
+            return false;
+        }
+        ui.box.load("__URL__&act=pass" + '&id=' + id, {title: '回复处理'});
+    }
+    function reject(id) {
+        if (id == '' || id == 0) {
+            ui.error("请选择一个项目");
+            return false;
+        }
+        ui.box.load("__URL__&act=reject" + '&id=' + id, {title: '拒绝处理'});
+    }
+</script>
+<include file="../Teacher/_footer" />

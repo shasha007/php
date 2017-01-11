@@ -1,0 +1,149 @@
+<div class="form2">
+    <form id="form">
+        <table id="field-table" width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tbody>
+            <tr>
+                <th class="line_l">标识</th>
+                <th class="line_l">名称</th>
+                <th class="line_l">类型</th>
+                <th class="line_l">是否必填</th>
+                <th class="line_l">操作</th>
+            </tr>
+
+            <volist name="fields" id="vo">
+                <tr overstyle="on">
+                    <td>
+                        <if condition="in_array($vo['name'], $defFields)">
+                            <input name="name[{$i}]" type="text" value="{$vo.name}" size="20" readonly>
+                        <else />
+                            <input name="name[{$i}]" type="text" value="{$vo.name}" size="20" >
+                        </if>
+                    </td>
+                    <td>
+                        <input name="title[{$i}]" type="text" value="{$vo.title}" size="20">
+                    </td>
+                    <td>
+                        <if condition="in_array($vo['name'], $defFields)">
+                            <select name="type[{$i}]">
+                                <if condition="$vo['name'] eq 'pic'">
+                                    <option value="file">文件</option>
+                                    <else />
+                                    <option value="input">输入框</option>
+                                </if>
+                            </select>
+                            <else />
+                            <select name="type[{$i}]">
+                                <option value="input" <if condition="$vo['type'] eq 'input'">selected</if>>输入框</option>
+                                <option value="text" <if condition="$vo['type'] eq 'text'">selected</if>>文本框</option>
+                                <option value="radio" <if condition="$vo['type'] eq 'radio'">selected</if>>单选</option>
+                                <option value="video" <if condition="$vo['type'] eq 'video'">selected</if>>视频</option>
+                                <option value="mobile" <if condition="$vo['type'] eq 'mobile'">selected</if>>手机号</option>
+                            </select>
+                        </if>
+                    </td>
+                    <td>
+                        <if condition="in_array($vo['name'], $defFields)">
+                            是
+                            <input type="hidden" name="is_must[{$i}]" value="1">
+                        <else />
+                            <label>
+                                <input type="checkbox" name="is_must[{$i}]" value="1"
+                                <eq name="vo.is_must" value="1">checked</eq>
+                                >
+                            </label>
+                        </if>
+                    </td>
+                    <td>
+                        <if condition="!in_array($vo['name'], $defFields)">
+                            <a href="javascript:void(0);" class="field-del">删除</a>
+                        </if>
+
+                    </td>
+                </tr>
+
+            </volist>
+            </tbody>
+        </table>
+
+
+        <div class="page_btm">
+            <input type="button" id="add-field" class="btn_b" value="添加字段" />
+            <input type="button" id="sub-field" class="btn_b" value="提 交" />
+            <input type="hidden" name="id" value="{$voteId}">
+        </div>
+    </form>
+
+</div>
+<table id="field-tpl" style="display: none">
+    <tbody>
+    <tr>
+        <td>
+            <input name="name[__i__]" type="text" value="" size="20" >
+        </td>
+        <td>
+            <input name="title[__i__]" type="text" value="" size="20">
+        </td>
+        <td>
+            <select name="type[__i__]">
+                <option value="input">输入框</option>
+                <option value="text">文本框</option>
+                <option value="radio">单选</option>
+                <option value="video">视频</option>
+                <option value="mobile">手机号</option>
+            </select>
+        </td>
+        <td>
+            <label>
+                <input type="checkbox" name="is_must[__i__]" value="1">
+            </label>
+        </td>
+        <td>
+            <a href="javascript:void(0);" class="field-del">删除</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<script type="text/javascript" src="__PUBLIC__/js/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jquery-migrate-1.4.1.min.js"></script>
+
+<script>
+    var i = '{$i|default=0}';
+    $(function () {
+
+        $('#add-field').click(function () {
+            ++i;
+            var html = $('#field-tpl tbody').html();
+            html = html.replace(/__i__/g, i);
+            $('#field-table tbody').append(html);
+        });
+
+        $(document).on('click', '.field-del', function () {
+            $(this).parent().parent().remove();
+        });
+
+        $('#sub-field').click(function () {
+
+            var formData = new FormData(document.getElementById('form'));
+            $.ajax({
+                url: "{:U('Pufinance/PuVoteAdmin/saveField')}",
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                dataType: 'json',
+                success: function (result) {
+                    if (result.status) {
+                        ui.box.close();
+                        ui.success(result.info);
+                        setTimeout(function(){location.reload();},1500);
+                    } else {
+//                    ui.box.close();
+                        ui.error(result.info);
+                        return false;
+                    }
+                }
+            });
+
+        });
+    });
+</script>

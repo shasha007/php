@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<title>用户信息</title>
+		<link rel="stylesheet" href="../Public/css/style.css" />
+	</head>
+	<body bgcolor="#F3F1EE">
+		<div class="L-article">
+		<form method="post" action="">
+			<div>
+				<span>*&emsp13;</span>
+                <i>姓&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;名&emsp13;:</i>
+				<input type="text" disabled name="username" value="<?php echo $realname;?>" id="name"/>
+			</div>
+			<div>
+                <span>*&emsp13;</span>
+                <i>民&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;族&emsp13;:</i>
+                <input type="text" name="nation" id="nation" value="<?php echo $ethnic;?>" />
+			</div>
+			<div>
+                <span>*&emsp13;</span><i>QQ(&emsp13;微信&emsp13;)&emsp13;:</i>
+                <input type="text" name="qq" id="qq" value="<?php echo $imid;?>" />
+			</div>
+			<div>
+                <span>*&emsp13;</span>
+                <i>邮&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;箱&emsp13;:</i>
+                <input name="email" id="email" value="<?php echo $email;?>" />
+			</div>
+			<div>
+                <span>*&emsp13;</span>
+                <i>地&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;&emsp13;址&emsp13;:</i>
+                <!--<input name="address" id="address" value="<?php echo $address;?>" />-->
+				<textarea id="address"  default_height="32" name="address" ><?php echo $address;?>
+				</textarea>
+			</div>
+			<div>
+				<span>*</span><i>紧急联系人手机号:</i>
+				<input name="tel" id="telphon" value="{$mobile}" />
+			</div>
+            <?php if(!empty($_GET['from']) && ($_GET['from'] == 'bindBankcard') ):?>
+            <div>
+                <i>&nbsp;推荐人uid:</i>
+                <input name="ruid" <?php if(!empty($recommend_uid)):?>readonly<?php endif;?> value="<?php echo $recommend_uid ?: '';?>" type="number" />
+            </div>
+            <?php endif;?>
+			<div class="L-inbag">
+				<button type="submit">完成</button>
+			</div>
+			</form>
+		</div>
+	</body>
+</html>
+<script type="text/javascript" src="../Public/js/mainScript.js" ></script>
+<script type="text/javascript">
+//    setActionBar('填写信息', '', '');
+
+	function changesize(obj) {
+		var d_h = obj.attributes['default_height'].value;
+		if(obj.scrollHeight > d_h) {
+			obj.style.height = obj.scrollHeight + 'px';
+		} else {
+			obj.style.height = d_h + 'px';
+		}
+	}
+	window.onload = function() {
+		var obj = document.getElementsByTagName('textarea');
+		var len = obj.length;
+		for(var i=0;i<len;i++) {
+			changesize(obj[i]);
+		}
+	}
+</script>

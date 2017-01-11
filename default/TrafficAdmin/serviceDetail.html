@@ -1,0 +1,29 @@
+<include file="../Public/header" />
+<div class="so_main">
+    <include file="../Public/trafficTabs" />
+    <!--<include file="tabs" />-->
+</div>
+<div class="list">
+    <div style="float: left;height: 25px;padding-left: 10px;">
+        账户余额： {$surplus|default='查询失败'}
+    </div>
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+            <th class="line_l">运营商</th>
+            <th class="line_l">套餐类型</th>
+            <th class="line_l">套餐面值</th>
+            <th class="line_l">折扣</th>
+        </tr>
+        <volist id="vo" name="goods">
+            <tr overstyle='on'>
+                <td align="left">{$vo.supplier}</td>
+                <td align="left">{$vo.province} {$vo.datatype} {$vo.parvalue}</td>
+                <td align="left">{$vo.amount|sprintf='%0.2f', ###}</td>
+                <td align="left">{$vo.discount|sprintf='%0.2f', ###}</td>
+            </tr>
+        </volist>
+    </table>
+</div>
+
+</div>
+<include file="../Public/footer" />

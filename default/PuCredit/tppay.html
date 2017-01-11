@@ -1,0 +1,68 @@
+<!--
+Created by huqiwen on 16/5/18.
+describe : 天平支付
+-->
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>支付</title>
+    <link href="../Public/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../Public/css/style.css?v=001" rel="stylesheet">
+    <link href="../Public/css/reset.css?v=001" rel="stylesheet">
+</head>
+<body style="background:#fff">
+<header class="h-tppay">
+    <img src="../Public/img/tplogo.png" class="img-responsive">
+</header>
+<div class="h-tp-num">
+    <div>
+        金额:
+    </div>
+    <div>
+        <input name="money" id="money" type="number" placeholder="请输入金额">
+    </div>
+</div>
+<!--提示银行卡认证-->
+<div class="w-transparent w-tips" <eq name="nobank" value="1">style="display:block"</eq>>
+<div>
+    <i>您还未进行实名认证</i>
+    <img src="../Public/img/wrz.png">
+    <p>
+        <span><a href="{:U('Pufinance/Bankcard/bindBankcard')}">立即认证</a></span>
+    </p>
+</div>
+</div>
+<footer class="h-tyfooter">
+    <div>
+        <!--支持方式:仅支持天平支付-->
+    </div>
+    <button class="h-tpbtn">
+        确认
+    </button>
+</footer>
+<script type="text/javascript" src="__PUBLIC__/js/jquery-2.1.1.min.js"></script>
+<script src="../Public/js/mainScript.js"></script>
+<script>
+    setActionBar('公益捐赠', '', '');
+    $('.h-tpbtn').click(function () {
+        var money = parseFloat($('#money').val());
+        if (isNaN(money) || money <= 0) {
+            alert('请输入金额');
+            return false;
+        }
+        $.post('{:U("pufinance/PuCredit/doTppay", array("from" => $_GET["from"], "sid" => $_GET["sid"]))}', {'money' : money}, function (result) {
+            if (result.status) {
+                location.href = result.data;
+            } else {
+                alert(result.info);
+                return false;
+            }
+        }, 'json');
+    });
+</script>
+</body>
+</html>

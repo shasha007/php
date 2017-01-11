@@ -1,0 +1,28 @@
+<table width="100%" border="1" cellspacing="0" cellpadding="0">
+    <tbody>
+    <tr>
+        <th class="line_l">退款单号</th>
+        <th class="line_l">业务退款单号</th>
+        <th class="line_l">退款用户</th>
+        <th class="line_l">退款金额</th>
+        <th class="line_l">退款原因</th>
+        <th class="line_l">退款状态</th>
+        <th class="line_l">创建时间</th>
+        <th class="line_l">退款时间</th>
+    </tr>
+    <volist name="list" id="vo">
+    <tr>
+        <td>{$vo.refund_no}</td>
+        <td>{$vo.out_refund_no}</td>
+        <td>{$vo.uid|getUserField=###,realname}</td>
+        <td>{$vo.refund_fee}</td>
+        <td>{$vo.refund_reson}</td>
+        <td><?php
+         echo $vo['refund_status'] ? ($vo['refund_status'] == 1 ? '退款成功' : '退款失败') : '待退款';
+        ?></td>
+        <td>{$vo.ctime|date='Y-m-d H:i:s', ###}</td>
+        <td>{$vo.refund_time|date='Y-m-d H:i:s', ###}</td>
+    </tr>
+	</volist>
+    </tbody>
+</table>

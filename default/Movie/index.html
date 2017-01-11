@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="">
+<head>
+    <meta charset="utf-8">
+    <title>惊喜一夏</title>
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>    <title>ticket</title>
+    <link rel="stylesheet" href="../Public/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../Public/css/reset.min.css">
+    <link rel="stylesheet" href="../Public/css/main.css?v=0.02">
+
+    <style>
+        html{
+            height: 100%;
+        }
+        body{
+            padding: 0 3%;
+        }
+
+    </style>
+</head>
+<body >
+<header class="ticket_header">
+    <img src="../Public/images/header.png">
+</header>
+<div class="num_h2">
+    <h2>当前人数:</h2>
+    <div class="num">
+        <div class="num_show">
+            <p></p>
+            <p class="number0">?</p>
+            <p></p>
+        </div>
+
+        <div class="num_show">
+            <p></p>
+            <p class="number1">?</p>
+            <p></p>
+        </div>
+        <div class="num_show">
+            <p></p>
+            <p class="number2">?</p>
+            <p></p>
+        </div>
+        <div class="num_show">
+            <p></p>
+            <p class="number3">?</p>
+            <p></p>
+        </div>
+        <div class="num_show">
+            <p></p>
+            <p class="number4">?</p>
+            <p></p>
+        </div>
+    </div>
+    <img class="refresh" src="../Public/images/f5.png">
+</div>
+
+<footer class="num_footer">
+    <p class="people"><input id="recommend_uid" placeholder="推荐人ID"></p>
+    <input type="hidden" id="team_id" name="team_id" value="{$id}">
+    <img class="ticket_btn" data-url="{:U('Pufinance/Movie/doPay')}" src="../Public/images/button.png">
+    <a class="ticket_record" href="{:U('Pufinance/Movie/rule')}"> 活动规则</a>
+    <a href="{:U('Pufinance/Movie/record')}"><p class="ticket_record">领票记录</p></a>
+</footer>
+</body>
+<script src="__PUBLIC__/js/jquery-2.1.1.min.js"></script>
+<script src="../Public/js/bootstrap.min.js"></script>
+<script src="../Public/js/main.js"></script>
+<script>
+    var GetNumUrl = '{:U("Pufinance/Movie/getNum")}';
+</script>
+<script src="../Public/js/getnum.js?v=0.01"></script>
+<script src="../Public/js/mainScript.js"></script>
+<script>
+    setActionBar('惊喜一夏', '', '');
+</script>
+</html>

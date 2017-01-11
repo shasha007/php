@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>天平</title>
+    <link rel="stylesheet" href="../Public/css/swiper-3.3.1.min.css" />
+    <link rel="stylesheet" href="../Public/css/style.css" />
+</head>
+<body bgcolor="#f2f1ee" style="padding-bottom:75px">
+<div class="swiper-container">
+    <if condition="$user['schoolEvent']['provinceId'] == 1">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide">
+                <img src="../Public/img/74358758939449784.jpg">
+            </div>
+
+        </div>
+    </if>
+
+    <!-- 如果需要分页器 -->
+    <div class="swiper-pagination"></div>
+</div>
+<ul class="wk_type">
+    <li onclick="window.location.href='{:U('pufinance/Money/index')}'">
+        <img src="../Public/img/wimg1.png">
+        <p>PU币</p>
+        <p>{$money|money2xs}</p>
+    </li>
+    <li onclick="window.location.href='{:U('pufinance/PuCredit/index')}'">
+        <img src="../Public/img/wtp.png">
+        <p>天平</p>
+        <p>{$pucredit.usable_amount}</p>
+    </li>
+
+    <eq name="is_ca" value="1">
+        <li onclick="window.location.href='{:U('pufinance/Bankcard/index')}'">
+            <img src="../Public/img/ca.png">
+            <p>实名认证</p>
+            <p>已认证</p>
+        </li>
+    <else />
+        <li onclick="window.location.href='{:U('pufinance/Bankcard/bindBankcard', array('ca' => 1))}'">
+            <img src="../Public/img/ca0.png">
+            <p>实名认证</p>
+            <p>未认证</p>
+        </li>
+    </eq>
+
+</ul>
+<ul class="wk_common">
+    <p>常用</p>
+    <ul><a href="{:U('fund/Mobile/apply_fund')}">
+        <li>
+            <img src="../Public/img/wimg5.png">
+            <div>
+                <p>活动赞助</p>
+                <p>组织活动无忧</p>
+            </div>
+        </li></a>
+        <a href="{:U('fund/Mobile/apply_cy')}">
+            <li>
+                <img src="../Public/img/wimg4.png">
+                <div>
+                    <p>创业扶持</p>
+                    <p>轻松创业</p>
+                </div>
+            </li></a>
+    </ul>
+</ul>
+
+<ul class="wk_common">
+    <p>其他</p>
+    <ul>
+        <if condition="$user['schoolEvent']['provinceId'] eq 1">
+            <a href="{:U('pufinance/Traffic/index')}">
+            <li>
+                <img src="../Public/img/wimg6.png">
+                <div>
+                    <p>买流量</p>
+                    <p>流量任意玩</p>
+                </div>
+            </li></a>
+        </if>
+        <a href="{:U('pufinance/Public/expect')}">
+            <li>
+                <img src="../Public/img/wimg7.png">
+                <div>
+                    <p>做公益</p>
+                    <p>用爱心温暖校园</p>
+                </div>
+            </li></a>
+    </ul>
+</ul>
+
+<include file="../Public/footer_nav" />
+</body>
+<script type="text/javascript" src="../Public/js/swiper-3.3.1.min.js"></script>
+<script>
+    window.onload=function(){
+        var mySwiper = new Swiper ('.swiper-container', {
+            direction: 'horizontal',
+            loop: true,
+            autoplay:3000,
+            // 如果需要分页器
+            pagination: '.swiper-pagination',
+
+
+        });
+    }
+</script>
+
+</html>

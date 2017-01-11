@@ -1,0 +1,65 @@
+<include file="../Public/header" />
+<div class="so_main">
+    <if condition="$mid != 179238">
+        <include file="../Public/tabs" />
+        <include file="walletTab" />
+        <hr>
+    </if>
+    <div class="tit_tab">
+        <ul>
+            <li><a href="{:U('pufinance/Wallet/money')}" <eq name="ACTION_NAME" value="money">class="on"</eq>>PU币余额</a></li>
+            <li><a href="{:U('pufinance/Wallet/moneyin')}" <eq name="ACTION_NAME" value="moneyin">class="on"</eq>>充值记录</a></li>
+            <li><a href="{:U('pufinance/Wallet/moneyout')}" <eq name="ACTION_NAME" value="moneyout">class="on"</eq>>消费记录</a></li>
+        </ul>
+    </div>
+    <div class="Toolbar_inbox">
+        <form method="get">
+            <input type="hidden" name="app" value="pufinance"/>
+            <input type="hidden" name="mod" value="Wallet"/>
+            <input type="hidden" name="act" value="moneyin"/>
+            用户UID：<input type="number" min="1" value="{$Think.get.uid}" name="uid" />&nbsp;&nbsp;
+            姓名：<input name="realname" type="text" value="{$Think.get.realname}">&nbsp;&nbsp;
+            备注：<input name="typeName" type="text" value="{$Think.get.typeName}">&nbsp;&nbsp;
+
+            &nbsp;&nbsp;<input type="submit" class="btn_b" value="搜索" />
+        </form>
+		<span>共{$totalRows}条记录</span>
+        <div class="page right">{$html}</div>
+    </div>
+
+    <div class="list">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+                <th class="line_l">用户ID</th>
+                <th class="line_l">姓名</th>
+                <th class="line_l">学校</th>
+                <th class="line_l">PU币</th>
+                <th class="line_l">备注</th>
+                <th class="line_l">时间</th>
+                <th class="line_l">状态</th>
+            </tr>
+            <volist id="vo" name="data">
+                <tr overstyle='on'>
+                    <td>{$vo.uid}</td>
+                    <td>{$vo.realname}</td>
+                    <td>{$vo.sid|tsGetSchoolName}</td>
+                    <td class="alR">{$vo.logMoney|money2xs}</td>
+                    <td class="alC">{$vo.typeName}</td>
+                    <td>{$vo.ctime|friendlyDate}</td>
+                    <td>
+                        <?php if($vo['typeName'] == 'PU币微信充值'): ?>
+                            <?php if($vo['prepay_id'] == ''): ?>
+                                <span>未支付</span>
+                            <?php endif; ?>
+                        <?php endif; ?>
+                    </td>
+                </tr>
+            </volist>
+        </table>
+    </div>
+    <div class="Toolbar_inbox">
+        <span>共{$totalRows}条记录</span>
+        <div class="page right">{$html}</div>
+    </div>
+</div>
+<include file="../Public/footer" />

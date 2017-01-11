@@ -1,0 +1,88 @@
+<div class="form2">
+
+    <dl class="lineD">
+        <dt>标题：<span style="color: #F00">*</span></dt>
+        <dd>
+            <input id="title" name="title" type="text" value="{$info.title}" size="20">
+        </dd>
+    </dl>
+
+    <dl class="lineD">
+        <dt>活动起止时间：</dt>
+        <dd>
+            <input type="text" id="stime" name="stime" value="<?php echo isset($info['stime']) ? date('Y-m-d H:i:s', $info['stime']) : ''?>" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
+            - <input  type="text" id="etime" name="etime" value="<?php echo isset($info['etime']) ? date('Y-m-d H:i:s', $info['etime']) : ''?>" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">&nbsp;
+
+        </dd>
+    </dl>
+
+    <dl class="lineD">
+        <dt>百分百中奖：</dt>
+        <dd>
+            <label><input type="radio" name="must_win" value="1" <eq name="info.must_win" value="1">checked</eq>>是</label>
+            <label><input type="radio" name="must_win" value="0" <eq name="info.must_win" value="0">checked</eq>>否</label>
+            <span style="margin-left: 30px;color: red;">如果允许百分百中奖但不允许多次中奖，则用户的抽奖机会必须不得大于总的奖品种类</span>
+        </dd>
+    </dl>
+
+    <dl class="lineD">
+        <dt>多次中奖：</dt>
+        <dd>
+            <label><input type="radio" name="is_multi" value="1" <eq name="info.is_multi" value="1">checked</eq>>是</label>
+            <label><input type="radio" name="is_multi" value="0" <eq name="info.is_multi" value="0">checked</eq>>否</label>
+            <span style="margin-left: 30px;color: red;">如果允许多次中奖，则奖品中至少需有一个允许多次中奖</span>
+        </dd>
+    </dl>
+
+    <dl class="lineD">
+        <dt>邀请码功能：</dt>
+        <dd>
+            <label><input type="radio" name="is_invite" value="1" <eq name="info.is_invite" value="1">checked</eq>>开启</label>
+            <label><input type="radio" name="is_invite" value="0" <eq name="info.is_invite" value="0">checked</eq>>关闭</label>
+            <span style="margin-left: 30px;color: red;">开启后，用户将在抽奖后产生一个唯一的邀请码</span>
+        </dd>
+    </dl>
+
+    <div class="page_btm">
+        <input type="button" class="btn_b" value="提 交" />
+        <input type="hidden" id="id" value="{$info.id|default=0}">
+    </div>
+</div>
+<script>
+    $(function () {
+        $('.btn_b').click(function () {
+            var title = $('#title').val();
+            var stime = $('#stime').val();
+            var etime = $('#etime').val();
+            if (title == '') {
+                ui.error('请填写标题');
+                return false;
+            }
+            if (stime == '' || etime == '') {
+                ui.error('请填写起止时间');
+                return false;
+            }
+
+            $.post("{:U('Pufinance/LotteryAdmin/doSaveLottery')}", {
+                'title' : title,
+                'stime' : stime,
+                'etime' : etime,
+                'must_win' : $(':checked[name="must_win"]').val(),
+                'is_multi' : $(':checked[name="is_multi"]').val(),
+                'is_invite' : $(':checked[name="is_invite"]').val(),
+
+                'id' : $('#id').val()
+            }, function(result) {
+                if (result.status) {
+                    ui.box.close();
+                    ui.success(result.info);
+                    setTimeout(function(){location.reload();},1500);
+                } else {
+//                    ui.box.close();
+                    ui.error(result.info);
+                    return false;
+                }
+            }, 'json');
+        });
+    });
+</script>

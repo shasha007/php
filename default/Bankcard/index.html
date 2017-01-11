@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>实名认证</title>
+    <link href="../Public/css/style.css" rel="stylesheet">
+    <link href="../Public/css/reset.css" rel="stylesheet">
+    <style>
+        .L-certification section{
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: -ms-flexbox;
+            display: flex;
+            height: 60px;
+            border-bottom: 1px solid #F3F1EE;
+            line-height: 60px;
+            background: #fff;
+        }
+        .L-certification section div:nth-child(1){
+            -webkit-box-flex: 1;
+            -webkit-flex: 1;
+            -ms-flex: 1;
+            flex: 1;
+            padding-left: 15px;
+        }
+        .L-certification section div:nth-child(2) img{
+            width: 9px;
+            margin: 21px 15px;
+            float: right;
+        }
+    </style>
+</head>
+<body>
+<article class="L-certification">
+    <a href="{:U('Pufinance/Bankcard/bankList')}">
+        <section>
+            <div>查看银行卡</div>
+            <div><img src="../Public/img/liuZuo.png"></div>
+        </section>
+    </a>
+    <a href="{:U('Pufinance/Service/personalInfo')}">
+        <section>
+            <div>个人信息修改</div>
+            <div><img src="../Public/img/liuZuo.png"></div>
+        </section>
+    </a>
+</article>
+<neq name="client" value="app">
+    <include file="../Public/footer_nav" />
+</neq>
+</body>
+</html>

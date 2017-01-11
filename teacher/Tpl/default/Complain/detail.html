@@ -1,0 +1,37 @@
+<dl style="margin:10px 10px 0; height:22px;" class="clear">
+    <dt class="left alR " style="width:70px;"> 申诉人：</dt>
+    <dd class="left alL">{$user_real_name}</dd>
+</dl>
+<dl style="padding-bottom: 5px; height:22px;" class="clear">
+    <dt class="left alR " style="width:70px;"> 申诉编号：</dt>
+    <dd class="left alL">{$rand_number}</dd>
+</dl>
+<dl style="margin:10px 10px 5px; height:22px;" class="clear">
+    <dt class="left alR " style="width:70px;"> 申诉类型：</dt>
+    <dd class="left alL">{$project_type_name}</dd>
+</dl>
+<dl style="margin:10px 10px 5px; height:22px;" class="clear">
+    <dt class="left alR " style="width:70px;"> 申诉项目：</dt>
+    <dd class="left alL">{$complain_project_name}</dd>
+</dl>
+<dl style="margin:10px 10px 5px; height:22px;" class="clear">
+    <dt class="left alR "> 申诉主因：</dt>
+    <dd class="left alL">{$system_reason_desc}</dd>
+</dl>
+
+<dl style="margin:10px 10px 5px; height:30px" class="clear">
+    <dt class="left alR" style="width:70px;">申诉描述：</dt>
+    <dd class="left alL cRed">{$self_reason_content}</dd>
+</dl>
+<dl style="margin:10px 10px 5px; height:30px" class="clear">
+    <dt class="left alR" style="width:70px;">申诉截图：</dt>
+    <dd class="left alL cRed">{$picture_string}</dd>
+</dl>
+<div style="clear: both;background:#F8F8F8; border-top:1px solid #E6E6E6; padding:5px;" class="alR">
+    <input type="button" class="btn_w" onclick="cancel()" value="关闭" />
+</div>
+<script type="text/javascript">
+    function cancel() {
+        ui.box.close();
+    }
+</script>

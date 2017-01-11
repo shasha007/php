@@ -1,0 +1,33 @@
+<include file="../Public/header" />
+<script type="text/javascript" src="../Public/js/laydate/laydate.js"></script>
+<div class="so_main">
+    <include file="../Public/tabs" />
+    <include file="countTab" />
+
+    <div class="Toolbar_inbox">
+        <form method="post" action="__URL__&act=doPupay">
+            创建时间起止<span style="color:red;">*</span>：<input onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" class="laydate-icon" style="width:200px; margin-right:10px;" name="ctimes" value="" /> -  <input onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" class="laydate-icon" style="width:200px;" value="" name="ctimee" /><br/>
+
+
+            合作方ID：<input name="partner_id" type="text" value="" /><br/>
+            业务名称：<input name="subject" type="text" value="" /><br/>
+
+            支付方式: <select name="type">
+            <option value="0">--选择支付方式--</option>
+            <?php foreach(pay_method() as $key=>$val):?>
+            <option value="<?php echo $key;?>"><?php echo $val;?></option>
+            <?php endforeach;?>
+        </select><br/>
+            支付状态: <select name="status">
+            <option value="0">--选择支付状态--</option>
+            <?php foreach(pay_status() as $k=>$val):?>
+            <option value="<?php echo $k+1;?>"><?php echo $val;?></option>
+            <?php endforeach;?>
+        </select><br/>
+            <input type="submit" class="btn_b" value="导出订单" />
+        </form>
+    </div>
+
+</div>
+
+<include file="../Public/footer" />

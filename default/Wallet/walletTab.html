@@ -1,0 +1,7 @@
+<div class="Toolbar_inbox">
+	<a href="<?php echo U('pufinance/Wallet/index');?>" class="btn_a"><span <?php if(in_array(ACTION_NAME, array('index'))):?>class="cRed"<?php endif;?>>额度</span></a>
+	<a href="<?php echo U('pufinance/Wallet/bankcardList');?>" class="btn_a"><span <?php if(ACTION_NAME == 'bankcardList'):?>class="cRed"<?php endif;?>>银行卡</span></a>
+	<a href="<?php echo U('pufinance/Wallet/record');?>" class="btn_a"><span <?php if(in_array(ACTION_NAME,array('record','transaction'))):?>class="cRed"<?php endif;?>>额度明细</span></a>
+	<a href="<?php echo U('pufinance/Wallet/withdraw');?>" class="btn_a"><span <?php if(ACTION_NAME == 'withdraw'):?>class="cRed"<?php endif;?>>提现</span></a>
+	<a href="<?php echo U('pufinance/Wallet/money');?>" class="btn_a"><span <?php if(ACTION_NAME == 'money'):?>class="cRed"<?php endif;?>>PU币</span></a>
+</div>

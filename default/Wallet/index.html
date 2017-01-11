@@ -1,0 +1,83 @@
+<include file="../Public/header" />
+<div class="so_main">
+    <include file="../Public/tabs" />
+	<include file="walletTab" />
+	<hr>
+    <div class="Toolbar_inbox">
+        <form action="__URL__">
+            <input type="hidden" name="app" value="pufinance"/>
+            <input type="hidden" name="mod" value="Wallet"/>
+            <input type="hidden" name="act" value="index"/>
+            用户UID：<input type="number" min="1" value="{$Think.get.uid}" name="uid" />&nbsp;&nbsp;
+            姓名：<input name="realname" type="text" value="{$Think.get.realname}">&nbsp;&nbsp;
+			身份证号：<input type="text" value="{$Think.get.ctfid}" name="ctfid" />&nbsp;&nbsp;
+			状态：<select name="status">
+				<option value="0">--请选择--</option>
+				<option value="1" <?php if(1 == $_GET['status']):?>selected<?php endif;?>>白名单</option>
+            <option value="2" <?php if(2 == $_GET['status']):?>selected<?php endif;?>>黑名单</option>
+
+			</select>
+            &nbsp;&nbsp;<input type="submit" class="btn_b" value="搜索" />
+        </form>
+		<span>共{$totalRows}条记录</span>
+        <div class="page right">{$html}</div>
+    </div>
+
+    <div class="list">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+                <th>用户ID</th>
+                <th>姓名</th>
+				<th>学号</th>
+                <th>身份证号</th>
+				<th>总额度</th>
+				<th>可用额度</th>
+				<th>免息额度</th>
+				<th>可用免息额</th>
+				<th>免风控金额</th>
+				<th>状态</th>
+				<th>操作</th>
+            </tr>
+			<?php foreach($data as $item):?>
+			<tr overstyle='on' id="list_<?php echo $item['uid'];?>">
+					<td><?php echo $item['uid'];?></td>
+					<td><?php echo getUserField($item['uid'], 'realname');?></td>
+					<td><?php echo getUserEmailNum(getUserField($item['uid'], 'email'));?></td>
+					<td><?php echo $item['ctfid'];?></td>
+					<td>￥<?php echo number_format($item['all_amount'],2);?> <a href="javascript:changeAllAmount({$item['uid']});">修改</a></td>
+					<td>￥<?php echo number_format($item['usable_amount'],2);?></td>
+					<td>￥<?php echo number_format($item['free_amount'],2);?> <a href="javascript:changeFreeAmount({$item['uid']});">修改</a></td>
+					<td>￥<?php echo number_format($item['free_usable_amount'], 2);?></td>
+					<td>￥<?php echo number_format($item['free_risk'],2);?> <a href="javascript:changeFreeRiskAmount({$item['uid']});">修改</a></td>
+					<td><?php echo get_credit_status($item['status']);?></td>
+					<td>
+                        <a href="javascript:void(0);" onclick="setUserStatus('{$item.uid}')">黑白名单</a>
+					</td>
+			</tr>
+			<?php endforeach;?>
+        </table>
+    </div>
+    <div class="Toolbar_inbox">
+        <span>共{$totalRows}条记录</span>
+        <div class="page right">{$html}</div>
+    </div>
+</div>
+<script type="text/javascript">
+function changeAllAmount(uid,amount){
+	var url = '<?php echo U('pufinance/Wallet/changeAllAmount'); ?>'+'&uid='+uid;
+    ui.box.load(url,{title:'总额度'});
+}
+function changeFreeAmount(uid){
+	var url = '<?php echo U('pufinance/Wallet/changeFreeAmount'); ?>'+'&uid='+uid;
+    ui.box.load(url,{title:'免息额度'});
+}
+function changeFreeRiskAmount(uid){
+	var url = '<?php echo U('pufinance/Wallet/changeFreeRiskAmount'); ?>'+'&uid='+uid;
+    ui.box.load(url,{title:'风控金额'});
+}
+function setUserStatus(uid) {
+    var url = "{:U('pufinance/Wallet/setUserStatus')}&uid=" + uid;
+    ui.box.load(url,{title:'设置黑白名单'});
+}
+</script>
+<include file="../Public/footer" />

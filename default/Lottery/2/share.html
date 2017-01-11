@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+	<link href="../Public/css/bootstrap.min.css" rel="stylesheet">
+	<link href="__PUBLIC__/lottery/{$lottery.id}/css/reset.css" rel="stylesheet">
+	<link href="__PUBLIC__/lottery/{$lottery.id}/css/style.css" rel="stylesheet">
+	<title>{$lottery.title}</title>
+</head>
+<body class="L-spirit-rule" style="height:100%;">
+
+<article  class="L-invotation-article">
+	<div class="L-prize-name">
+		<p>我的邀请码</p>
+		<p>{$lotteryUser.invite_code}</p>
+		<p>每成功邀请1位好友</p>
+		<p>即可获得1张抽奖券</p>
+		<p>分享越多抽奖机会越多</p>
+	</div>
+</article>
+<eq name="client" value="app">
+	<a class="L-invotation-share" href="javascript:void(0);">
+		<img class="invotation-detail-btn" src="__PUBLIC__/lottery/{$lottery.id}/img/buttonShare.png">
+	</a>
+</eq>
+<div class="L-invotation-remark">
+	<p>温馨提示：填写邀请码参与抽奖，</p>
+	<p>邀请人和被邀请人各获得一张抽奖券。</p>
+</div>
+<img class="friend-detail-btn" src="__PUBLIC__/lottery/{$lottery.id}/img/friend.png">
+<p class="L-friend-list">
+	<span>好友</span>
+	<span>我的奖励</span>
+</p>
+<div class="L-friend-div">
+    <ul class="L-friend-ul">
+    </ul>
+</div>
+</body>
+<script src="__PUBLIC__/js/jquery-2.1.1.min.js"></script>
+<script src="../Public/js/bootstrap.min.js"></script>
+<script>
+	$(function () {
+        $('.L-invotation-share').click(function () {
+            Android.share(
+                "我在PU抽大奖，填写我的邀请码【{$lotteryUser.invite_code}】一起来参与！ {:U('Pufinance/Lottery/index')}&lottery_id={$lottery.id}",
+                "我在PU抽大奖，填写我的邀请码【{$lotteryUser.invite_code}】一起来参与！",
+                "{:U('Pufinance/Lottery/index')}&lottery_id={$lottery.id}",
+                "<?=SITE_URL?>/public/lottery/{$lottery.id}/img/share.jpeg"
+            );
+        });
+    });
+
+    var page=1;
+    var loadingStr = '<div class="spinner"><div class="spinner-container container1"><div class="circle1"></div><div class="circle2"></div><div class="circle3"></div><div class="circle4"></div></div><div class="spinner-container container2"><div class="circle1"></div><div class="circle2"></div><div class="circle3"></div><div class="circle4"></div></div><div class="spinner-container container3"><div class="circle1"></div><div class="circle2"></div><div class="circle3"></div><div class="circle4"></div></div></div>';
+    var noneStr = '<div class="nonestr">没有记录</div>';
+    var emptyStr = '<div class="L-friendEmpty"><img src="__PUBLIC__/lottery/{$lottery.id}/img/nofriend.png"><span>亲，您还木有邀请好友，快去邀请吧！</span> </div>';
+    var loadingShow = false;
+    var html = $(".L-friend-ul").html();
+    $(function () {
+        getdata();
+    });
+
+    function getdata(){
+        if (!loadingShow) {
+            $(".L-friend-ul").append(loadingStr);
+            loadingShow = true;
+            getAjaxNews();
+        }
+
+    }
+
+    $(window).scroll(function(){
+        var document = window.document;
+        var top = document.body.scrollTop || document.documentElement.scrollTop
+            || 0;
+        top += document.documentElement.clientHeight;
+        var height = document.documentElement.scrollHeight;
+        if (height - top < 1000) {
+            if (!loadingShow) {
+                $(".L-friend-ul").append(loadingStr);
+                loadingShow = true;
+                getAjaxNews();
+            }
+        }
+    });
+
+    function getAjaxNews() {
+        $.ajax({
+            url: "{:U('Pufinance/Lottery/share')}&lottery_id={$lottery.id}",
+            //type: 'get',
+            dataType: 'json',
+            data: {
+                'p': page
+            },
+            error: function () {
+            },
+            success: function (result) {
+                if (result.status) {
+                    $(".spinner").hide();
+//                    console.log(result.data);
+                    if (result.data.length > 0) {
+                        var html = '';
+                        $.each(result.data, function (e, n) {
+                            html += '<li><span>' + n.realname +'</span><span>抽奖券+1</span></li>';
+                        })
+                        $(".L-friend-ul").append(html);
+                        //	$(".square_comment_list").append(data);
+                        $(".spinner").remove();
+                        page++;
+                        loadingShow = false;
+                    } else {
+                        if (page == 1) {
+                            $(".L-friend-div").append(emptyStr);
+                        } else {
+                            $(".L-friend-div").append(noneStr);
+                        }
+                        loadingShow = true;
+                    }
+                }
+            }
+        });
+    }
+
+</script>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="stylesheet" href="../Public/css/style.css" />
+</head>
+<body>
+	<img src="../Public/img/man.png" class="w-applySuccessImg">
+	<p class="w-applyP">提现申请完成</p>
+	<p class="w-applyP">您的订单已完成,如有问题请<a>联系客服</a></p>
+	<a href="<?php echo U('wap/Account/puList');?>" class="w-viewBtn">查看PU币明细</a>
+</body>
+<script type="text/javascript" src="../Public/js/mainScript.js" ></script>
+<script type="text/javascript">
+	function jump(){
+		window.location.href = '<?php echo U("wap/Account/puList")?>';
+	}
+	setTimeout(jump,3000);
+    setActionBar('提现申请完成', '', '');
+</script>
+</html>

@@ -1,0 +1,92 @@
+<div class="form2">
+    <form id="form">
+        <dl class="lineD">
+            <dt>可用抽奖次数：<span style="color: #F00">*</span></dt>
+            <dd>
+                <input name="times" type="text" value="{$info.times}" size="20">
+            </dd>
+        </dl>
+
+        <dl class="lineD">
+            <dt>充值手机：<span style="color: #F00">*</span></dt>
+            <dd>
+                <input name="mobile" type="text" value="{$info.mobile}" size="20">
+            </dd>
+        </dl>
+
+        <dl class="lineD">
+            <dt>地址：<span style="color: #F00">*</span></dt>
+            <dd>
+                <input name="address" type="text" value="{$info.address}" size="20">
+            </dd>
+        </dl>
+
+        <dl class="lineD">
+            <dt>联系人：<span style="color: #F00">*</span></dt>
+            <dd>
+                <input name="realname" type="text" value="{$info.realname}" size="20">
+            </dd>
+        </dl>
+
+
+        <dl class="lineD">
+            <dt>联系电话：</dt>
+            <dd>
+                <input name="phone" type="text" value="{$info.phone}" size="20" />
+            </dd>
+        </dl>
+
+        <div class="page_btm">
+            <input type="button" class="btn_b" value="提 交" />
+            <input type="hidden" name="uid" value="{$info.uid}">
+            <input type="hidden" name="lottery_id" value="{$info.lottery_id}">
+        </div>
+    </form>
+
+</div>
+<script type="text/javascript" src="__PUBLIC__/js/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jquery-migrate-1.4.1.min.js"></script>
+
+<script>
+    $(function () {
+
+        $('.btn_b').click(function () {
+
+            var formData = new FormData(document.getElementById('form'));
+            $.ajax({
+                url: "{:U('Pufinance/LotteryAdmin/saveUser')}",
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                dataType: 'json',
+                success: function (result) {
+                    if (result.status) {
+                        ui.box.close();
+                        ui.success(result.info);
+                        setTimeout(function(){location.reload();},1500);
+                    } else {
+//                    ui.box.close();
+                        ui.error(result.info);
+                        return false;
+                    }
+                }
+            });
+
+
+            /*$.post("{:U('Pufinance/LotteryAdmin/doSaveLottery')}", {
+                'title' : title, 'stime' : stime, 'etime' : etime, 'id' : $('#id').val()
+            }, function(result) {
+                if (result.status) {
+                    ui.box.close();
+                    ui.success(result.info);
+                    setTimeout(function(){location.reload();},1500);
+                } else {
+//                    ui.box.close();
+                    ui.error(result.info);
+                    return false;
+                }
+            }, 'json');*/
+        });
+    });
+</script>

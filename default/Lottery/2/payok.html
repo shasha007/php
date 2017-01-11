@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <link href="../Public/css/bootstrap.min.css" rel="stylesheet">
+    <link href="__PUBLIC__/lottery/{$lottery.id}/css/reset.css" rel="stylesheet">
+    <link href="__PUBLIC__/lottery/{$lottery.id}/css/style.css" rel="stylesheet">
+
+    <title>{$lottery.title}</title>
+</head>
+<body class="L-spirit-charge" style="height:100%;">
+<div class="L-spirit-get-nums">
+    <if condition="$type == 1">
+        <p>PU币支付成功</p>
+        <p>恭喜你获得<span>1</span>张抽奖券！</p>
+    <else />
+        <p>PU币充值成功</p>
+        <p>恭喜你免费获得<span>{$type}</span>张抽奖券！</p>
+    </if>
+</div>
+
+<a class="L-spirit-draw-a" href="{:U('Pufinance/Lottery/draw')}&lottery_id={$lottery.id}">
+    <img class="start-draw-btn" src="__PUBLIC__/lottery/{$lottery.id}/img/goDraw.png">
+</a>
+
+</body>
+</html>

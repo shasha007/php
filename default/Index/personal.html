@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>个人中心</title>
+    <link href="../Public/css/style.css" rel="stylesheet">
+    <link href="../Public/css/reset.css" rel="stylesheet">
+</head>
+<body>
+<article class="L-personal">
+    <a href="{:U('pufinance/Index/myqr')}">
+        <section>
+            <div>我的名片</div>
+            <div><img src="../Public/img/liuZuo.png"></div>
+        </section>
+    </a>
+    <a href="{:U('pufinance/Service/personalInfo')}">
+        <section>
+            <div>更改个人信息</div>
+            <div><img src="../Public/img/liuZuo.png"></div>
+        </section>
+    </a>
+    <a href="{:U('pufinance/Service/changePwd')}">
+        <section>
+            <div>更改支付密码</div>
+            <div><img src="../Public/img/liuZuo.png"></div>
+        </section>
+    </a>
+    <a href="{:U('pufinance/Help/index')}">
+        <section>
+            <div>常见问题</div>
+            <div><img src="../Public/img/liuZuo.png"></div>
+        </section>
+    </a>
+    <button onclick="location.href='{:U("pufinance/Public/logout")}'">退出当前账号</button>
+
+</article>
+
+
+<include file="../Public/footer_nav" />
+
+</body>
+</html>

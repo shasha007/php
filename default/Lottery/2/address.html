@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <link href="../Public/css/bootstrap.min.css" rel="stylesheet">
+    <link href="__PUBLIC__/lottery/{$lottery.id}/css/reset.css" rel="stylesheet">
+    <link href="__PUBLIC__/lottery/{$lottery.id}/css/style.css" rel="stylesheet">
+
+    <title>{$lottery.title}</title>
+</head>
+<body class="L-spirit-rule" style="height:100%;">
+
+<header style="margin-top: 5%;">
+    <img src="__PUBLIC__/lottery/{$lottery.id}/img/detailBack.png" style="width: 100%;" />
+</header>
+<article  class="L-spirit-detaile-article">
+
+    <form id="addr-form" action="{:U('Pufinance/Lottery/saveAddress', array('lottery_id' => $lottery['id']))}" method="post">
+        <div class="L-spirit-details">
+            <h4>中奖信息填写</h4>
+            <div>
+                <span><label for="mobile">流量充值号码</label></span>
+                <input id="mobile" name="mobile" value="{$lotteryUser.mobile}"/>
+            </div>
+            <div>
+                <span><label for="realname">收件人</label></span>
+                <input id="realname" name="realname" value="{$lotteryUser.realname}"/>
+            </div>
+            <div>
+                <span><label for="phone">联系电话</label></span>
+                <input id="phone" name="phone" value="{$lotteryUser.phone}" />
+            </div>
+            <div>
+                <span class="L-address">
+                    <label for="address">收货地址</label></span>
+                <textarea id="address" name="address"  default_height="62" >{$lotteryUser.address}</textarea>
+            </div>
+        </div>
+
+        <a class="L-spirit-detail-a" href="javascript:void(0);">
+            <img class="ok-btn" src="__PUBLIC__/lottery/{$lottery.id}/img/ok.png">
+        </a>
+    </form>
+
+    <div class="L-spirit-prompt">
+        <p>友情提示：</p>
+        <p>请认真填写中奖收货信息，务必保证有效，多次中奖，收货信息仅需填写一次，工作人员会在三个工作日内陆续发放奖品。</p>
+    </div>
+</article>
+
+<script src="__PUBLIC__/js/jquery-2.1.1.min.js"></script>
+<script src="../Public/js/bootstrap.min.js"></script>
+<script>
+    $(function () {
+        $('.L-spirit-detail-a').click(function () {
+            $('#addr-form').submit();
+        })
+    })
+</script>
+</body>
+</html>

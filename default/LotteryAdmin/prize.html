@@ -1,0 +1,92 @@
+<include file="../Public/header" />
+<script type="text/javascript" src="../Public/js/laydate/laydate.js"></script>
+
+<div class="so_main">
+    <include file="tabs" />
+
+    <hr>
+    <div class="Toolbar_inbox">
+        <a href="javascript:void(0);" class="btn_a" onclick="addPrize('{$lotteryId}');">
+            <span>添加奖品</span>
+        </a>
+    </div>
+
+    <div class="list">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+                <th class="line_l">ID</th>
+                <th class="line_l">奖品名称</th>
+                <th class="line_l">图片</th>
+                <th class="line_l">活动</th>
+                <th class="line_l">数量</th>
+                <th class="line_l">时间</th>
+                <th class="line_l">指定的中奖记录ID</th>
+                <th class="line_l">允许多次中奖</th>
+                <th class="line_l">操作</th>
+            </tr>
+            <volist id="vo" name="list">
+                <tr id="{$vo.id}">
+                    <td>{$vo.id}</td>
+                    <td>
+                        {$vo.name} <br>
+                        {$vo.desc}
+                    </td>
+                    <td>
+                        <if condition="$vo['icon']">
+                            <img src="<?=PIC_URL?>/data/uploads/{$vo.icon}" width="50" height="50">
+                        </if>
+
+                        <if condition="$vo['pic']">
+                            <img src="<?=PIC_URL?>/data/uploads/{$vo.pic}" width="50" height="50">
+                        </if>
+                    </td>
+                    <td>
+                        <a href="{:U('Pufinance/LotteryAdmin/index', array('id' => $vo['lottery_id']))}">
+                            {$vo.lottery_id|get_lottery_field}
+                        </a>
+                    </td>
+                    <td>{$vo.total_num} / {$vo.last_num}</td>
+                    <td>{$vo.ctime|friendlyDate}</td>
+                    <td>{$vo.winids}</td>
+                    <td>
+                        <eq name="vo.is_multi" value="1">是<else />否</eq>
+                    </td>
+
+                    <td>
+                        <a href="javascript:void(0);" onclick="editPrize('{$vo.id}')">编辑</a>
+                        <a href="javascript:void(0);" onclick="deletePrize('{$vo.id}')">删除</a>
+                    </td>
+                </tr>
+            </volist>
+        </table>
+    </div>
+
+</div>
+<script type="text/javascript">
+
+    function addPrize(lotteryId) {
+        var url = "{:U('Pufinance/LotteryAdmin/addPrize')}&lottery_id=" + lotteryId;
+        ui.box.load(url, {'title' : '添加奖品'});
+    }
+
+    function editPrize(id) {
+        var url = "{:U('Pufinance/LotteryAdmin/editPrize')}&id=" + id;
+        ui.box.load(url, {'title' : '编辑活动'});
+    }
+
+    function deletePrize(id) {
+        if (confirm('确定要删除该奖品吗？')) {
+            $.post('{:U("pufinance/LotteryAdmin/deletePrize")}', {'id' : id}, function (result) {
+                if (result.status) {
+                    ui.success('删除成功');
+                    setTimeout('location.reload()', 400);
+                } else {
+                    ui.error(result.info);
+                }
+            }, 'json');
+        }
+    }
+
+
+</script>
+<include file="../Public/footer" />

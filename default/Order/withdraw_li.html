@@ -1,0 +1,42 @@
+<volist name="list" id="vo">
+    <li>
+        <header class=" container">
+            <p class="h_WiOdDate pull-left">{$vo.ctime|date='m月d日 H:i', ###}</p>
+            <p class="pull-right h-color-red">
+                <switch name="vo.chk_status">
+                    <case value="0">审核中</case>
+                    <case value="1">待放款</case>
+                    <case value="2">已驳回</case>
+                    <case value="3">已放款</case>
+                </switch>
+            </p>
+        </header>
+        <div class="h-fqsc-con clearfix container">
+            <div class="h-bank-card bank-{$vo.bank_id}">
+                <p class="clearfix container">
+                    <img class="img-responsive" src="../Public/img/bank/bank-{$vo.bank_id}.png">
+                    <span>{$vo.bank_name}储蓄卡</span>
+                </p>
+                <p><i class="h-point"></i>
+                    <i class="h-point"></i>
+                    <i class="h-point"></i>
+                    <i class="h-point"></i>
+                    &emsp13;
+                    <i class="h-point"></i>
+                    <i class="h-point"></i>
+                    <i class="h-point"></i>
+                    <i class="h-point"></i>
+                    &emsp13;
+                    <i class="h-point"></i>
+                    <i class="h-point"></i>
+                    <i class="h-point"></i>
+                    <i class="h-point"></i>
+                    <i>{$vo.card_no|substr=###, -4,4}</i>
+                </p>
+            </div>
+            <div class="h-fqsc-con-r h_WiOdFlag pull-right">
+                金额: <p>&yen;{$vo.money}</p>
+            </div>
+        </div>
+    </li>
+</volist>

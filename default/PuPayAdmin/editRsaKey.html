@@ -1,0 +1,45 @@
+<div class="form2">
+
+    <dl class="lineD">
+        <dt>合作方ID：<span style="color: #F00">*</span></dt>
+        <dd>
+            {$partner_id}
+        </dd>
+    </dl>
+
+    <dl class="lineD">
+        <dt>RSA公钥：</dt>
+        <dd>
+            <textarea id="rsa_key" name="rsa_key" cols="60" rows="8">{$key}</textarea><span style="color: #F00">注意：不包含头尾注释</span>
+        </dd>
+    </dl>
+
+    <div class="page_btm">
+        <input type="button" class="btn_b" value="提 交" />
+    </div>
+</div>
+<script>
+    $(function () {
+        $('.btn_b').click(function () {
+            var rsa_key = $('#rsa_key').val();
+            if (rsa_key == '') {
+                ui.error('请填写RSA公钥');
+                return false;
+            }
+            $.post("{:U('pufinance/PuPayAdmin/saveRsaKey')}", {
+                'partner_id' : '{$partner_id}',
+                'rsa_key' : rsa_key
+            }, function(result) {
+                if (result.status) {
+                    ui.box.close();
+                    ui.success(result.info);
+                    setTimeout(function(){location.reload();},1500);
+                } else {
+//                    ui.box.close();
+                    ui.error(result.info);
+                    return false;
+                }
+            }, 'json');
+        });
+    });
+</script>

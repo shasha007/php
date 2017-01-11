@@ -1,0 +1,23 @@
+<include file="../Public/header" />
+<div class="so_main">
+    <include file="../Public/tabs" />
+    <include file="userTab" />
+    <form action="{:U('pufinance/Admin/doDayrate')}" method="post">
+        <div class="list">
+
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <?php for($i = 1; $i <= 12; $i++):?>
+                <tr>
+                    <td width="200px" align="right">{$i}期日利率： </td>
+                    <td>万分之 <input name="rate[{$i}]" type="text" value="{$rate[$i]}" size="20">
+                        <span style="color: #F00">最多保留4位小数</span></td>
+                </tr>
+                <?php endfor;?>
+            </table>
+        </div>
+        <div class="page_btm">
+            <input type="submit" class="btn_b" value="提 交" />
+        </div>
+    </form>
+</div>
+<include file="../Public/footer" />

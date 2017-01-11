@@ -1,0 +1,72 @@
+<include file="../Public/header" />
+<script type="text/javascript" src="../Public/js/laydate/laydate.js"></script>
+
+<div class="so_main">
+    <include file="tabs" />
+
+    <hr>
+    <div class="Toolbar_inbox">
+        <form action="__URL__">
+            <input type="hidden" value="Pufinance" name="app" />
+            <input type="hidden" value="LotteryAdmin" name="mod" />
+            <input type="hidden" value="user" name="act" />
+            活动ID：<input type="number" min="1" value="{$Think.get.lottery_id}" name="lottery_id" />&nbsp;&nbsp;
+            用户UID：<input type="number" value="{$Think.get.uid}" name="uid" />&nbsp;&nbsp;
+            &nbsp;&nbsp;<input type="submit" class="btn_b" value="搜索" />
+        </form>
+        <span>共{$totalRows}条记录</span>
+        <div class="page right">{$html}</div>
+    </div>
+
+    <div class="list">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+                <th class="line_l">序号</th>
+                <th class="line_l">用户</th>
+                <th class="line_l">活动</th>
+                <th class="line_l">可用抽奖次数</th>
+                <th class="line_l">时间</th>
+                <th class="line_l">联系信息</th>
+                <th class="line_l">邀请码</th>
+                <th class="line_l">操作</th>
+            </tr>
+            <volist id="vo" name="data">
+                <tr id="{$vo.id}">
+                    <td>{$vo.id}</td>
+                    <td>{$vo.uid|getUserField=###,realname} / {$vo.uid}</td>
+                    <td>
+                        <a href="{:U('Pufinance/LotteryAdmin/index', array('id' => $vo['lottery_id']))}">{$vo.lottery_id|get_lottery_field}</a></td>
+                    <td>{$vo.times}</td>
+                    <td>{$vo.ctime|friendlyDate}</td>
+                    <td>
+                        充值手机： {$vo.mobile} <br>
+                        地址： {$vo.address} <br>
+                        联系人： {$vo.realname} <br>
+                        联系电话： {$vo.phone} <br>
+                    </td>
+                    <td>{$vo.invite_code}</td>
+
+                    <td>
+                        <a href="javascript:void(0);" onclick="editUser('{$vo.uid}','{$vo.lottery_id}')">编辑</a>
+
+                    </td>
+                </tr>
+            </volist>
+        </table>
+    </div>
+
+    <div class="Toolbar_inbox">
+        <span>共{$totalRows}条记录</span>
+        <div class="page right">{$html}</div>
+    </div>
+</div>
+<script type="text/javascript">
+
+    function editUser(uid, lotteryId) {
+        var url = "{:U('Pufinance/LotteryAdmin/editUser')}&uid=" + uid + '&lottery_id=' + lotteryId;
+        ui.box.load(url, {'title' : '编辑用户'});
+    }
+
+
+</script>
+<include file="../Public/footer" />

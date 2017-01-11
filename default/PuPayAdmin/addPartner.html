@@ -1,0 +1,45 @@
+<div class="form2">
+
+    <dl class="lineD">
+        <dt>名称：<span style="color: #F00">*</span></dt>
+        <dd>
+            <input id="name" name="name" type="text" value="" size="20">
+        </dd>
+    </dl>
+
+    <dl class="lineD">
+        <dt>RSA公钥：</dt>
+        <dd>
+            <textarea id="rsa_key" name="rsa_key" cols="60" rows="8"></textarea><span style="color: #F00">注意：不包含头尾注释</span>
+        </dd>
+    </dl>
+
+    <div class="page_btm">
+        <input type="button" class="btn_b" value="提 交" />
+    </div>
+</div>
+<script>
+    $(function () {
+        $('.btn_b').click(function () {
+            var name = $('#name').val();
+            var rsa_key = $('#rsa_key').val();
+            if (name == '') {
+                ui.error('请填写名称');
+                return false;
+            }
+            $.post("{:U('pufinance/PuPayAdmin/doAddPartner')}", {
+                'name' : name, 'rsa_key' : rsa_key
+            }, function(result) {
+                if (result.status) {
+                    ui.box.close();
+                    ui.success(result.info);
+                    setTimeout(function(){location.reload();},1500);
+                } else {
+//                    ui.box.close();
+                    ui.error(result.info);
+                    return false;
+                }
+            }, 'json');
+        });
+    });
+</script>

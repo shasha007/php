@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta content="telephone=no" name="format-detection">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <link href="../Public/s_vote/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../Public/s_vote/common/css/reset.min.css" rel="stylesheet">
+    <link href="../Public/s_vote/common/css/style.css" rel="stylesheet">
+    <title>“青春三下乡”主题摄影比赛</title>
+</head>
+<body>
+<div id="beautiful" v-cloak>
+    <img src="../Public/s_vote/common/images/banner.png">
+
+    <nav>
+        <div>
+            <p>参与团队</p>
+
+            <p v-text="info.schools"></p>
+        </div>
+        <div>
+            <p>投票总数</p>
+
+            <p v-text="info.votes"></p>
+        </div>
+        <div>
+            <p>浏览量</p>
+
+            <p  v-text="info.pv"></p>
+        </div>
+
+    </nav>
+    <div class="time">
+        <p class="titC"><img src="../Public/s_vote/common/images/t1.png"></p>
+
+        <p class="start">开始时间&emsp13;:&emsp13;{$sdate}</p>
+
+        <p class="end">结束时间&emsp13;:&emsp13;{$edate}</p>
+    </div>
+    <div class="rule">
+        <p class="titC"><img src="../Public/s_vote/common/images/t2.png"></p>
+        <ul>
+            <li>每人每天可投一票；</li>
+            <li>为体现比赛的公平、公正，摄影作品的最终得分由微博关注度情况（点赞数、转发数、评论数）、PU平台线上展示投票情况、专家评审三部分组成，每组作品分数=PU平台线上展示投票情况*40%+微博关注度*10%+专家评审*50%。</li>
+        </ul>
+    </div>
+    <div class="rule">
+        <p class="titC"><img src="../Public/s_vote/common/images/t4.png"></p>
+        <ul>
+            <li>一等奖1名（奖品为微单一台+600PU币）</li>
+            <li>二等奖3名（奖品为拍立得一台+300PU币）</li>
+            <li>三等奖5名（奖品为小米手环一个+100PU币）</li>
+            <li>优秀奖若干（奖品为100PU币）</li>
+        </ul>
+    </div>
+    <div class="inc">
+        <p class="titC"><img src="../Public/s_vote/common/images/t3.png"></p>
+        <article>
+&nbsp;&nbsp;今年暑期，我校积极开展以“青春建功十三五•携手共筑中国梦”为主题的暑期社会实践活动，引导广大青年学生在社会实践中成长锻炼。为提高我校暑期社会实践活动的丰富性以及参与性，更好地展现我校大学生的精神风貌，校团委、校科协开展了2016年苏州大学“青春三下乡”主题摄影比赛。
+        </article>
+        <!--<footer class="titC">查看更多</footer>-->
+    </div>
+    <div class="indexSchool">
+        <ul class="indexUl clearfix">
+            <li v-for="school in school">
+                <img :src="school.cover" @click="goSchool(school.sid)" />
+                <p class="school" v-text="school.title" @click="goSchool(school.sid)"></p>
+                <p class="point" @click="goSchool(school.sid)">{{school.votes}}票</p>
+                <button  @click="voteSchool(school.sid,$index)">投票</button>
+            </li>
+        </ul>
+        <div class="index_loading_flag"></div>
+    </div>
+    <!--投票提示-->
+    <div class="modal fade" id="tips">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!--成功-->
+                <div class="success">
+                    <p>投票成功</p>
+                </div>
+                <!--false-->
+                <div class="error" >
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="indexFoot">
+        <div><a href="{:U('Pufinance/PhotoVote/top')}">查看排名</a></div>
+    </footer>
+</div>
+</body>
+<script>
+    var voteUrl = "index.php?app=Pufinance&mod=PhotoVote&act=vote";
+    var schoolInfoUrl = 'index.php?app=Pufinance&mod=PhotoVote&act=school';
+</script>
+<script src="../Public/s_vote/bower_components/requirejs/require.js" data-main="../Public/s_vote/common/js/photo_index"></script>
+<script src="../Public/js/mainScript.js"></script>
+<script>
+    setActionBar('“青春三下乡”主题摄影比赛', '', '');
+</script>
+</html>

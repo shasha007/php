@@ -1,0 +1,195 @@
+<include file="../Public/header" />
+<style type="text/css">
+    .boxy-wrapper {
+        left: 120px!important;
+    }
+</style>
+<div class="so_main">
+    <include file="./tabs" />
+
+    <div id="searchBlog_div" <neq name="Think.get.isSearch" value="1">style="display:none;"</neq>>
+    <div class="page_tit">搜索 [ <a href="javascript:void(0);" onclick="searchBlog();">隐藏</a> ]</div>
+    <div class="form2">
+        <form id="search-form" action="__URL__">
+            <input type="hidden" name="app" value="pufinance"/>
+            <input type="hidden" name="mod" value="PuVoteAdmin"/>
+            <input type="hidden" name="act" value="item"/>
+            <input type="hidden" name="isSearch" value="1"/>
+            <dl class="lineD">
+                <dt>活动ID：</dt>
+                <dd>
+                    <input name="vote_id" type="text" value="{$Think.get.vote_id}">
+                </dd>
+            </dl>
+            <dl class="lineD">
+                <dt>投票项ID：</dt>
+                <dd>
+                    <input name="id" type="text" value="{$Think.get.id}">
+                </dd>
+            </dl>
+            <dl class="lineD">
+                <dt>投票项名称：</dt>
+                <dd>
+                    <input name="name" type="text" value="{$Think.get.name}">
+                </dd>
+            </dl>
+            <dl class="lineD">
+                <dt>状态：</dt>
+                <dd>
+                    <select name="status">
+                        <option value="">全部</option>
+                        <option value="0" <if condition="$_GET['status'] === '0'">selected</if>>待审核</option>
+                        <option value="1" <if condition="$_GET['status'] == 1">selected</if>>通过</option>
+                        <option value="-1" <if condition="$_GET['status'] == -1">selected</if>>未通过</option>
+                    </select>
+                </dd>
+            </dl>
+
+            <div class="page_btm">
+                <input type="submit" class="btn_b" value="确定" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="Toolbar_inbox">
+    <a href="javascript:void(0);" class="btn_a" onclick="searchBlog();">
+        <span class="searchBlog_action"><neq name="Think.get.isSearch" value="1">搜索<else/>搜索完毕</neq></span>
+    </a>
+    <if condition="intval($_GET['vote_id'])">
+        <a href="javascript:void(0);" class="btn_a" onclick="addItem('{$Think.get.vote_id}')">
+            <span class="searchBlog_action">添加</span>
+        </a>
+        <a href="javascript:void(0);" class="btn_a" onclick="importItem('{$Think.get.vote_id}')">
+            <span class="searchBlog_action">导入投票项</span>
+        </a>
+    </if>
+
+    <div class="page right">{$html}</div>
+</div>
+<div class="list">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+            <th class="line_l">ID</th>
+            <th class="line_l">投票项名称</th>
+            <th class="line_l">用户</th>
+            <th class="line_l">所属活动</th>
+            <th class="line_l">票数</th>
+            <th class="line_l">描述</th>
+            <th class="line_l">封面</th>
+            <th class="line_l">附加</th>
+            <th class="line_l">状态</th>
+            <th class="line_l">操作</th>
+        </tr>
+        <volist name="data" id="vo">
+            <tr overstyle="on">
+                <td>{$vo.id}</td>
+                <td>{$vo.name}
+                </td>
+                <td>
+                    <if condition="$vo.uid">
+                        {$vo.uid|getUserField=###,realname} <br>
+                        {$vo.uid|tsGetSchoolByUid0}
+                    </if>
+                </td>
+                <td>{$vo.vote_id|get_vote_field}</td>
+                <td>{$vo.votes}</td>
+                <td width="200px;">{$vo.desc}</td>
+                <td>
+                    <volist name="vo.pic" id="pic">
+                        <a href="{$pic}" target="_blank"><img src="{$pic}" width="50" height="50"></a>
+                    </volist>
+                </td>
+                <td>
+                    <if condition="$vo['field_values']">
+                        <?php foreach(json_decode($vo['field_values'], true) as $v):
+                            echo $v['title'] . ': ';
+                            switch ($v['type']) {
+                                case 'video':
+                                    echo $v['value']['link'];
+                                    break;
+                                case 'mobile';
+                                case 'input':
+                                case 'text':
+                                case 'radio':
+                                    echo $v['value'];
+                                    break;
+                                case 'pic':
+                                    foreach($v['value'] as $pic):
+                                    echo $pic . '<br>';
+                                    endforeach;
+                                    break;
+                            }
+                            echo '<br>';
+                        endforeach;?>
+                    </if>
+                </td>
+                <td><?php echo $vo['status'] == 0 ? '待审核' : ($vo['status'] == 1 ? '通过' : '未通过');?></td>
+                <td>
+                    <if condition="$vo['status'] == 0">
+                        <a href="javascript:void(0);" onclick="changeStatus('{$vo.id}', 1)">通过</a>
+                        <a href="javascript:void(0);" onclick="changeStatus('{$vo.id}', -1)">驳回</a>
+                        <br>
+                    </if>
+                    <a href="javascript:void(0);" onclick="editItem('{$vo.id}')">编辑</a><br>
+                    <a href="{:U('Pufinance/PuVote/item', array('vote_id' => $vo['vote_id'], 'item_id' => $vo['id']))}" target="_blank">查看</a>
+                </td>
+
+            </tr>
+        </volist>
+    </table>
+</div>
+</div>
+
+<script type="text/javascript" src="../Public/js/laydate/laydate.js"></script>
+<script>
+
+    var isSearchHidden = <neq name="Think.get.isSearch" value="1">1<else/>0</neq>;
+    function searchBlog() {
+        if(isSearchHidden == 1) {
+            $("#searchBlog_div").slideDown("fast");
+            $(".searchBlog_action").html("搜索完毕");
+            isSearchHidden = 0;
+        }else {
+            $("#searchBlog_div").slideUp("fast");
+            $(".searchBlog_action").html("搜索");
+            isSearchHidden = 1;
+        }
+    }
+
+    function changeStatus(id, status) {
+        if (confirm('确定执行操作吗？')) {
+            $.post('{:U("Pufinance/PuVoteAdmin/changeStatus")}', {
+                'id': id,
+                'status': status
+            }, function (result) {
+                if (result.status) {
+                    ui.success('操作成功');
+                    setTimeout("location.reload()",1000);
+                } else {
+                    ui.error(result.info);
+                    return false;
+                }
+            }, 'json');
+        }
+    }
+
+    function addItem(voteId) {
+        var url = "{:U('pufinance/PuVoteAdmin/addItem')}&vote_id=" + voteId;
+        ui.box.load(url,{title:'添加投票选项'});
+    }
+
+    function importItem(voteId) {
+        var url = "{:U('pufinance/PuVoteAdmin/importItem')}&vote_id=" + voteId;
+        ui.box.load(url,{title:'导入投票选项'});
+    }
+
+
+
+    function editItem(id) {
+        var url = "{:U('pufinance/PuVoteAdmin/editItem')}&id=" + id;
+        ui.box.load(url,{title:'编辑投票选项'});
+    }
+
+</script>
+<include file="../Public/footer" />

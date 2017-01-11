@@ -1,0 +1,217 @@
+<!--
+Created by lisha on 16/11/15
+describe : “我的青春我做主”全国大学生才艺大赛
+-->
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta content="telephone=no" name="format-detection">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <link href="__PUBLIC__/puvote/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="__PUBLIC__/js/cropper/cropper.min.css" rel="stylesheet" />
+    <link href="__PUBLIC__/puvote/common/css/reset.min.css" rel="stylesheet">
+    <link href="__PUBLIC__/puvote/common/css/style.css" rel="stylesheet">
+    <title>报名 - {$vote.name}</title>
+</head>
+<body class="L-sign">
+<div class="L-sign-section">
+    <div class="L-photo">
+        <p><span class="tit">{$vote.item_field.pic.title|default='封面'}</span>&emsp13;&emsp13;&emsp13;选择上传1-5张照片，第一张为封面</p>
+        <div class="container" id="crop-avatar">
+            <div class="loadBox " uptype="base">
+                <ul class="preview clearfix">
+
+                    <li class="avatar-view">
+                        <img class="show_input" src="__PUBLIC__/puvote/common/images/u65.png">
+                    </li>
+                    <!--<input type="file" accept="image/*" class="file_input">-->
+
+                </ul>
+            </div>
+
+            <!-- Cropping modal -->
+            <div class="modal fade" id="avatar-modal" aria-hidden="true" aria-labelledby="avatar-modal-label" role="dialog" tabindex="-1">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <form class="avatar-form" action="{:U('Pufinance/PuVote/uppic')}&vote_id=2" enctype="multipart/form-data" method="post">
+                            <div class="modal-header">
+                                <button class="close" data-dismiss="modal" type="button">&times;</button>
+                                <h4 class="modal-title" id="avatar-modal-label">上传图片</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="avatar-body">
+
+                                    <!-- Upload image and data -->
+                                    <div class="avatar-upload">
+                                        <input class="avatar-src" name="src" type="hidden"/>
+                                        <input class="avatar-data" name="data" type="hidden"/>
+                                        <!--<label for="avatarInput">头像上传</label>-->
+                                        <input class="avatar-input" id="avatarInput" name="file" type="file" accept="image/*" capture="camera" >
+                                    </div>
+
+                                    <!-- Crop and preview -->
+                                    <div class="row">
+                                        <div class="col-md-9">
+                                            <div class="avatar-wrapper"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="L-index-b avatar-btns">
+                                <a class="L-rotate-left">
+                                    <img class="rotate-btn" data-method="rotate" data-option="-90" src="__PUBLIC__/puvote/common/images/rotate22.png">
+                                </a>
+                                <a class="L-rotate-right">
+                                    <img class="rotate-btn" data-method="rotate" data-option="90" src="__PUBLIC__/puvote/common/images/rotate11.png">
+                                </a>
+                            </div>
+
+                            <div class="row avatar-btns">
+
+                                <div class="col-md-3 L-done-photo">
+                                    <button class="btn btn-primary btn-block avatar-save" data-method="getCroppedCanvas">上传</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div><!-- /.modal -->
+        </div>
+    </div>
+    <form id="apply-form" action="{:U('Pufinance/PuVote/doApply')}&vote_id=2" method="post">
+
+        <div class="L-video">
+            <p><span class="tit">{$vote.item_field.video.title}</span>&emsp13;&emsp13;&emsp13;可添加1个视频（可不添加）</p>
+            <div class="L-video-addr"><input name="fields[video]" type="text"  placeholder="仅支持优酷、腾讯视频"/></div>
+        </div>
+        <div class="L-type">
+            <div>
+                <span class="tit">{$vote.item_field.type.title}</span>&emsp13;&emsp13;&emsp13;
+                <input id="type" type="hidden" name="fields[type]" value="">
+                <ul>
+                    <volist name="vote.item_field.type.options" id="vo">
+                        <li data-checked="false" data-value="{$vo}">
+                            <div><img src="__PUBLIC__/puvote/common/images/notchoose.png"></div>
+                            <span>{$vo}</span>
+                        </li>
+                    </volist>
+                </ul>
+            </div>
+        </div>
+        <div class="L-detaile">
+            <p><span class="tit">{$vote.item_field.name.title|default='选手名称'}</span><input name="name" type="text" placeholder="请输入姓名或昵称"/></p>
+            <p><span class="tit">{$vote.item_field.desc.title|default='参赛宣言'}</span><input name="desc" type="text" placeholder="一句话描述自己的参赛宣言"/></p>
+            <p><span class="tit">{$vote.item_field.mobile.title}</span><input type="tel" name="fields[mobile]" placeholder="请输入手机"/></p>
+            <div><span class="tit sex">{$vote.item_field.sex.title}</span>
+                <input id="sex" type="hidden" name="fields[sex]" value="">
+                <ul>
+                    <volist name="vote.item_field.sex.options" id="vo">
+                        <li data-checked="false" data-value="{$vo}">
+                            <div><img src="__PUBLIC__/puvote/common/images/notchoose.png"></div>
+                            <span>{$vo}</span>
+                        </li>
+                    </volist>
+                </ul>
+            </div>
+        </div>
+        <p class="L-sign-con">请如实填写报名信息，提交信息为唯一获奖凭证</p>
+        <input type="hidden" name="pic" value="">
+        <button class="L-sign-submit" type="button">提交报名</button>
+    </form>
+    <a href="{:U('Pufinance/PuVote/agree')}&vote_id=2" class="L-rule-see">提交报名即可认同参赛协议</a>
+    <include file="./footer" />
+</div>
+<!--loading-->
+<div class="loading-baground" id="loading">
+    <div class="h-loading">
+        <div class="h-animate">
+        </div>
+    </div>
+</div>
+</body>
+<script src="__PUBLIC__/puvote/bower_components/jquery/dist/jquery.min.js"></script>
+<script src="__PUBLIC__/puvote/bower_components/bootstrap/dist/js/bootstrap.js"></script>
+<script src="__PUBLIC__/js/cropper/cropper.min.js"></script>
+<script src="__PUBLIC__/puvote/common/js/main.js"></script>
+<script>
+    function chooseType(){
+        var index=0;
+        var li=document.getElementsByClassName("L-type")[0].getElementsByTagName("li");
+        for(var i=0;i<li.length;i++){
+            li[i].addEventListener("click",select);
+            li[i].index=i;
+        }
+        function select(){
+            li[index].setAttribute("data-checked",false);
+            li[index].getElementsByTagName("div")[0].getElementsByTagName("img")[0].setAttribute('src','__PUBLIC__/puvote/common/images/notchoose.png');
+            index=this.index;
+            this.setAttribute("data-checked",true);
+            this.getElementsByTagName("div")[0].getElementsByTagName("img")[0].setAttribute('src','__PUBLIC__/puvote/common/images/choose.png');
+            $('#type').val($(this).data('value'));
+        }
+    }
+    function chooseSex(){
+        var index=0;
+        var li=document.getElementsByClassName("L-detaile")[0].getElementsByTagName("li");
+        for(var i=0;i<li.length;i++){
+            li[i].addEventListener("click",select);
+            li[i].index=i;
+        }
+        function select(){
+            li[index].setAttribute("data-checked",false);
+            li[index].getElementsByTagName("div")[0].getElementsByTagName("img")[0].setAttribute('src','__PUBLIC__/puvote/common/images/notchoose.png');
+            index=this.index;
+            this.setAttribute("data-checked",true);
+            this.getElementsByTagName("div")[0].getElementsByTagName("img")[0].setAttribute('src','__PUBLIC__/puvote/common/images/choose.png');
+            $('#sex').val($(this).data('value'));
+
+        }
+    }
+    $(function () {
+        chooseType();
+        chooseSex();
+
+        $('.L-sign-submit').click(function () {
+            var img = [];
+            $(':input[name="img\[\]"]').each(function () {
+                img.push($(this).val());
+            })
+            if (img.length > 0) {
+                $(':input[name="pic"]').val(JSON.stringify(img));
+            }
+            var $form = $('#apply-form');
+            var formData = new FormData($form[0]);
+            $('#loading').show();
+
+            $.ajax({
+                url: $form.attr('action'),
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                dataType: 'json',
+                cache: false,
+                success: function (result) {
+                    $('#loading').hide();
+                    if (result.status) {
+                        alert(result.info);
+                        window.location.href = "{:U('Pufinance/PuVote/index')}&vote_id=2";
+                    } else {
+                        alert(result.info);
+                        return false;
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+//                    alert(JSON.stringify(XMLHttpRequest) + '--------' + textStatus  + '--------' + JSON.stringify(errorThrown))
+                }
+            });
+        });
+    });
+</script>
+</html>

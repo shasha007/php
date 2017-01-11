@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>PU币</title>
+    <link href="../Public/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../Public/css/style.css?v=001" rel="stylesheet">
+    <link href="../Public/css/reset.css?v=001" rel="stylesheet">
+</head>
+<body>
+
+<div class="h-detail">
+    <div class="h-detail-header">
+        <p>余额</p>
+        <p class="h-bigred">{$user.money|money2xs}</p>
+        <div class="h-detail-fix"><a href="{:U('wap/Account/puList')}">明细</a></div>
+
+    </div>
+
+</div>
+
+<eq name="client" value="app">
+    <if condition="$user['schoolEvent']['provinceId'] eq 1">
+        <!--江苏省内 客户端 显示-->
+        <a href="{:U('pufinance/Traffic/index')}">
+            <div class="h-DLiu" id="traffic">
+                <div>
+                    买流量
+                </div>
+                <div>
+                    <img class="h-DLiu-img" src="../Public/img/liuZuo.png">
+
+                </div>
+            </div>
+        </a>
+    </if>
+    <footer class="h-detail-foot">
+        <div class="h-detail-btn clearfix">
+                <div id="recharger">
+                    充值
+                </div>
+            <div>
+                <a href="{:U('pufinance/Withdraw/index')}">提现</a>
+            </div>
+        </div>
+    </footer>
+
+<else />
+    <div class="h_DliuCover">
+    <a href="{:U('pufinance/Money/recharge')}">
+        <div class="h-DLiu" id="rechargeh5" style="display: none;">
+
+            <div>
+                充值
+            </div>
+            <div>
+                <img class="h-DLiu-img" src="../Public/img/liuZuo.png">
+
+            </div>
+
+        </div>
+    </a>
+    <a href="{:U('pufinance/Withdraw/index')}">
+        <div class="h-DLiu" id="withdraw" style="display: none;">
+
+            <div>
+                提现
+            </div>
+            <div>
+                <img class="h-DLiu-img" src="../Public/img/liuZuo.png">
+
+            </div>
+
+        </div>
+    </a>
+    </div>
+    <include file="../Public/footer_nav" />
+</eq>
+
+</body>
+<script type="text/javascript" src="__PUBLIC__/js/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="../Public/js/bootstrap.min.js"></script>
+<script src="../Public/js/mainScript.js"></script>
+<script>
+    setActionBar('PU币', '', '');
+    $(function () {
+        $('#recharger').click(function () {
+            Android.openInternalPage("charge", "", "", "", "", "", "");
+        });
+    });
+    setTimeout(function () {
+        if (typeof(Android) == "undefined") {
+            $(".wk_footBar").show();
+            $('#withdraw').show();
+            $('#rechargeh5').show();
+            $('.h-detail-foot').hide();
+            $('#traffic').hide();
+        } else {
+            $(".wk_footBar").hide();
+            $('#withdraw').hide();
+            $('#rechargeh5').hide();
+            $('.h-detail-foot').show();
+            $('#traffic').show();
+        }
+    }, 500);
+</script>
+</html>

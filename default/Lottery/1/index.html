@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <link href="../Public/css/bootstrap.min.css" rel="stylesheet">
+    <link href="__PUBLIC__/lottery/css/swiper-3.3.1.min.css" rel="stylesheet">
+    <link href="__PUBLIC__/lottery/css/reset.css" rel="stylesheet">
+    <link href="__PUBLIC__/lottery/css/style.css" rel="stylesheet">
+    <title>众灵狂欢日</title>
+</head>
+<body class="L-spirit-index" style="height:100%;">
+<div class="swiper-container">
+    <div class="swiper-wrapper">
+        <volist name="records" id="vo">
+            <div class="swiper-slide">
+                <div class="L-spirit-index-article1">
+                    恭喜<span>{$vo.uid|tsGetSchoolByUid0}</span>
+                    &nbsp;&nbsp;<span>{$vo.uid|getUserField=###,realname}</span>
+                    &nbsp;&nbsp;获得<span>{$prizes[$vo['prize_id']]['name']}</span>奖品
+                </div>
+            </div>
+        </volist>
+    </div>
+    <!-- 如果需要分页器 -->
+    <!--<div class="swiper-pagination"></div>-->
+</div>
+<p class="L-spirit-index-article2">
+    我的符咒：<span>{$lotteryUser.times|default=0}</span>张&nbsp;
+    <if condition="$recharge">
+        <a href="{:U('Pufinance/Lottery/recharge')}&lottery_id=1">获取符咒></a>
+    </if>
+    <if condition="$pay">
+        <a href="{:U('Pufinance/Lottery/pay')}&lottery_id=1&type=1">获取符咒></a>
+    </if>
+</p>
+
+<a class="L-spirit-index-join" href="{:U('Pufinance/Lottery/draw')}&lottery_id=1">
+    <img class="go-join-btn" src="__PUBLIC__/lottery/img/goCanjia.png">
+</a>
+
+<a class="L-spirit-footer" href="{:U('Pufinance/Lottery/rule')}&lottery_id=1" style="color: #9b9ca1;"><活动规则点击查看></a>
+
+</body>
+<script src="__PUBLIC__/js/jquery-2.1.1.min.js"></script>
+<script src="../Public/js/bootstrap.min.js"></script>
+<script src="__PUBLIC__/lottery/js/swiper-3.3.1.min.js"></script>
+<script>
+    window.onload=function(){
+        var mySwiper = new Swiper ('.swiper-container', {
+            direction: 'horizontal',
+            loop: true,
+            autoplay:3000,
+            // 如果需要分页器
+            pagination: '.swiper-pagination',
+
+
+        });
+    }
+</script>
+</html>
